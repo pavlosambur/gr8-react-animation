@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { gsap } from "gsap";
 
 interface TeamInfoProps {
     teamName: string;
@@ -104,11 +105,36 @@ const H2HSection: React.FC<H2HSectionProps> = ({
     );
 };
 
-const ChangeMatchStage: React.FC = () => {
-    return <></>;
+const ChangeMatchStage: React.FC<{
+    onStageChange: () => void;
+    nextStage: string;
+}> = ({ onStageChange, nextStage }) => {
+    return (
+        <button
+            className="bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-2 px-4 rounded w-80 self-auto"
+            onClick={onStageChange}
+        >
+            Change match stage to: {nextStage}
+        </button>
+    );
 };
 
 const FootballScoreboard: React.FC = () => {
+    const matchStages = [
+        "Starting soon",
+        "Match started",
+        "Half-time",
+        "Match ended",
+    ];
+    const [currentStageIndex, setCurrentStageIndex] = useState(0);
+
+    const handleStageChange = () => {
+        setCurrentStageIndex(
+            (prevIndex) => (prevIndex + 1) % matchStages.length
+        );
+    };
+    const nextStageIndex = (currentStageIndex + 1) % matchStages.length;
+    const nextStage = matchStages[nextStageIndex];
     return (
         <div className="flex w-full text-black">
             <div className="flex w-1/2 py-5 justify-center">
@@ -135,7 +161,7 @@ const FootballScoreboard: React.FC = () => {
                             <ScoreDisplay
                                 matchHomeScore={0}
                                 matchAwayScore={0}
-                                matchStage="Starting Soon"
+                                matchStage={matchStages[currentStageIndex]}
                                 firstHalfHomeScore={null}
                                 firstHalfAwayScore={undefined}
                             />
@@ -161,7 +187,12 @@ const FootballScoreboard: React.FC = () => {
             </div>
             <div className="flex w-1/2 py-5 justify-center">
                 {/* change match stage */}
-                <div className="flex w-full justify-center"></div>
+                <div className="w-full justify-center">
+                    <ChangeMatchStage
+                        onStageChange={handleStageChange}
+                        nextStage={nextStage}
+                    />
+                </div>
             </div>
         </div>
     );
