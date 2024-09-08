@@ -1,5 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
+
+interface MatchTimerProps {
+    initialMinutes: number;
+}
+
+const MatchTimer: React.FC<MatchTimerProps> = ({ initialMinutes }) => {
+    const [secondsElapsed, setSecondsElapsed] = useState(initialMinutes * 60); // Переводим минуты в секунды
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setSecondsElapsed((prev) => prev + 1);
+        }, 1000); // Обновляем каждую секунду
+
+        return () => clearInterval(interval); // Очищаем интервал при размонтировании
+    }, []);
+
+    const minutes = Math.floor(secondsElapsed / 60);
+    const seconds = secondsElapsed % 60;
+
+    return (
+        <div>
+            {minutes.toString().padStart(2, "0")}:
+            {seconds.toString().padStart(2, "0")}
+        </div>
+    );
+};
 
 interface TeamInfoProps {
     teamName: string;
@@ -33,35 +59,103 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ teamName, teamLogo, results }) => {
 interface ScoreDisplayProps {
     matchHomeScore: number;
     matchAwayScore: number;
-    matchStage: string; // Опционально для отображения стадии матча
+    curentStage: string;
+    nextStage: string;
     firstHalfHomeScore?: number | null;
     firstHalfAwayScore?: number | null;
 }
+
 const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
     matchHomeScore,
     matchAwayScore,
-    matchStage,
+    curentStage,
     firstHalfHomeScore,
     firstHalfAwayScore,
 }) => {
+    const stageRef = useRef<HTMLDivElement>(null);
+    const [displayStage, setDisplayStage] = useState(curentStage);
+    const [showTimer, setShowTimer] = useState(false); // Состояние для отображения таймера
+    const [initialMinutes, setInitialMinutes] = useState(0); // Добавляем состояние для начальных минут таймера
+
+    useEffect(() => {
+        const timeline = gsap.timeline(); // Создаем GSAP таймлайн
+
+        // Анимация исчезновения текущей стадии
+        timeline
+            .to(stageRef.current, {
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out",
+            })
+            .call(() => {
+                // Меняем текст на следующую стадию через состояние
+                setDisplayStage(curentStage);
+            })
+            // Анимация появления новой стадии
+            .to(stageRef.current, {
+                opacity: 1,
+                duration: 1,
+                ease: "power2.out",
+            });
+
+        // Проверка стадии для запуска таймера
+        if (curentStage === "Match started" || curentStage === "Second half") {
+            // Запускаем вторую анимацию только для стадий "Match started" и "Second half started"
+            timeline
+                .to(stageRef.current, {
+                    opacity: 0, // Исчезновение текста
+                    duration: 1,
+                    ease: "power2.out",
+                })
+                .call(() => {
+                    // Скрываем текст и показываем таймер
+                    setShowTimer(true);
+
+                    // Устанавливаем начальные минуты для таймера в зависимости от стадии
+                    if (curentStage === "Match started") {
+                        setInitialMinutes(0); // Для первого тайма
+                    } else if (curentStage === "Second half") {
+                        setInitialMinutes(45); // Для второго тайма
+                    }
+                })
+                .to(stageRef.current, {
+                    opacity: 1, // Появление таймера
+                    duration: 1,
+                    ease: "power2.out",
+                });
+        } else {
+            // Если стадия не "Match started" и не "Second half started", сбрасываем таймер
+            setShowTimer(false);
+        }
+    }, [curentStage]);
+
     return (
         <div className="flex flex-col items-center">
-            <div className="flex justify-center font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-textLive whitespace-normal">
-                {matchStage}
+            <div
+                ref={stageRef}
+                className="flex justify-center font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-textLive whitespace-normal"
+            >
+                {showTimer ? (
+                    <MatchTimer initialMinutes={initialMinutes} />
+                ) : (
+                    displayStage
+                )}{" "}
+                {/* Показываем либо таймер, либо текущую стадию */}
             </div>
+
+            {/* Счёт матча */}
             <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[24px] leading-[30px] tracking-[0.8px]">
                 <span>{matchHomeScore}</span>
                 <span>:</span>
                 <span>{matchAwayScore}</span>
             </div>
+
+            {/* Счёт первого тайма */}
             {firstHalfHomeScore !== undefined &&
                 firstHalfAwayScore !== undefined && (
                     <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] text-textLive">
-                        {/* home score */}
                         <span>{firstHalfHomeScore}</span>
-                        {/* score divider */}
                         <span>:</span>
-                        {/* score away */}
                         <span>{firstHalfAwayScore}</span>
                     </div>
                 )}
@@ -124,6 +218,7 @@ const FootballScoreboard: React.FC = () => {
         "Starting soon",
         "Match started",
         "Half-time",
+        "Second half",
         "Match ended",
     ];
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
@@ -161,7 +256,8 @@ const FootballScoreboard: React.FC = () => {
                             <ScoreDisplay
                                 matchHomeScore={0}
                                 matchAwayScore={0}
-                                matchStage={matchStages[currentStageIndex]}
+                                curentStage={matchStages[currentStageIndex]} // Текущая стадия
+                                nextStage={matchStages[nextStageIndex]} // Следующая стадия
                                 firstHalfHomeScore={null}
                                 firstHalfAwayScore={undefined}
                             />
