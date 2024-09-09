@@ -1,6 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { gsap } from "gsap";
 
+enum MatchStages {
+    MATCH_NOT_STARTED = "Starting soon",
+    MATCH_STARTED = "Kick-off",
+    HALF_BREAK = "Half-time",
+    SECOND_HALF_STARTED = "Second half",
+    MATCH_ENDED = "Match ended",
+}
+
 interface MatchTimerProps {
     initialMinutes: number;
 }
@@ -33,6 +41,12 @@ interface TeamInfoProps {
     results: string[];
 }
 const TeamInfo: React.FC<TeamInfoProps> = ({ teamName, teamLogo, results }) => {
+    const colorMap: { [key: string]: string } = {
+        win: "bg-win",
+        lose: "bg-lose",
+        draw: "bg-draw",
+        undefinedResult: "bg-undefinedResult",
+    };
     return (
         <div className="flex flex-1 flex-col items-center">
             {/* team-logo */}
@@ -48,7 +62,9 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ teamName, teamLogo, results }) => {
                 {results.map((result, index) => (
                     <div
                         key={index}
-                        className={`h-2 w-2 bg-${result} rounded mx-2px`}
+                        className={`h-2 w-2 ${
+                            colorMap[result] || "bg-gray-500"
+                        } rounded mx-2px`}
                     ></div>
                 ))}
             </div>
@@ -80,52 +96,96 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
     useEffect(() => {
         const timeline = gsap.timeline(); // Создаем GSAP таймлайн
 
-        // Анимация исчезновения текущей стадии
-        timeline
-            .to(stageRef.current, {
-                opacity: 0,
-                duration: 1,
-                ease: "power2.out",
-            })
-            .call(() => {
-                // Меняем текст на следующую стадию через состояние
-                setDisplayStage(curentStage);
-            })
-            // Анимация появления новой стадии
-            .to(stageRef.current, {
-                opacity: 1,
-                duration: 1,
-                ease: "power2.out",
-            });
+        // Шаг 1: Исчезновение текущего элемента (таймер или текст)
+        timeline.to(stageRef.current, {
+            opacity: 0,
+            duration: 1,
+            ease: "power2.out",
+        });
 
-        // Проверка стадии для запуска таймера
-        if (curentStage === "Match started" || curentStage === "Second half") {
-            // Запускаем вторую анимацию только для стадий "Match started" и "Second half started"
+        // Шаг 2: Проверка стадии для анимации появления новой стадии или таймера
+        if (
+            curentStage === MatchStages.MATCH_STARTED ||
+            curentStage === MatchStages.SECOND_HALF_STARTED
+        ) {
+            // Для "Match started" и "Second half" сначала показываем текст стадии, а затем таймер
+
+            // Шаг 3: Появление текста стадии матча
             timeline
+                .call(() => {
+                    setDisplayStage(curentStage); // Меняем текст на новую стадию
+                    setShowTimer(false); // Убираем таймер (если был активен)
+                })
                 .to(stageRef.current, {
-                    opacity: 0, // Исчезновение текста
+                    opacity: 1, // Появление текста новой стадии
                     duration: 1,
+                    ease: "power2.out",
+                })
+
+                // Шаг 4: Исчезновение текста стадии перед появлением таймера
+                .to(stageRef.current, {
+                    opacity: 0, // Исчезновение текста новой стадии
+                    duration: 0.5,
                     ease: "power2.out",
                 })
                 .call(() => {
                     // Скрываем текст и показываем таймер
-                    setShowTimer(true);
+                    setShowTimer(true); // Показываем таймер
 
                     // Устанавливаем начальные минуты для таймера в зависимости от стадии
-                    if (curentStage === "Match started") {
+                    if (curentStage === MatchStages.MATCH_STARTED) {
                         setInitialMinutes(0); // Для первого тайма
-                    } else if (curentStage === "Second half") {
+                    } else if (
+                        curentStage === MatchStages.SECOND_HALF_STARTED
+                    ) {
                         setInitialMinutes(45); // Для второго тайма
                     }
                 })
+
+                // Шаг 5: Появление таймера
                 .to(stageRef.current, {
                     opacity: 1, // Появление таймера
                     duration: 1,
                     ease: "power2.out",
                 });
+        } else if (
+            curentStage === MatchStages.HALF_BREAK ||
+            curentStage === MatchStages.MATCH_ENDED
+        ) {
+            // Для "Half-time" и "Match ended" сначала скрываем таймер, а затем показываем текст стадии
+
+            // Шаг 3: Скрытие таймера
+            timeline
+                .call(() => {
+                    setShowTimer(false); // Убираем таймер
+                })
+                .to(stageRef.current, {
+                    opacity: 0, // Исчезновение таймера (если он активен)
+                    duration: 0,
+                    ease: "power2.out",
+                })
+
+                // Шаг 4: Появление текста новой стадии
+                .call(() => {
+                    setDisplayStage(curentStage); // Меняем текст на новую стадию
+                })
+                .to(stageRef.current, {
+                    opacity: 1, // Появление текста новой стадии
+                    duration: 1,
+                    ease: "power2.out",
+                });
         } else {
-            // Если стадия не "Match started" и не "Second half started", сбрасываем таймер
-            setShowTimer(false);
+            // Если стадия не требует таймера, просто обновляем стадию
+            timeline
+                .call(() => {
+                    setDisplayStage(curentStage);
+                    setShowTimer(false); // Убираем таймер (если он активен)
+                })
+                .to(stageRef.current, {
+                    opacity: 1, // Появление текста новой стадии
+                    duration: 1,
+                    ease: "power2.out",
+                });
         }
     }, [curentStage]);
 
@@ -215,11 +275,11 @@ const ChangeMatchStage: React.FC<{
 
 const FootballScoreboard: React.FC = () => {
     const matchStages = [
-        "Starting soon",
-        "Match started",
-        "Half-time",
-        "Second half",
-        "Match ended",
+        MatchStages.MATCH_NOT_STARTED,
+        MatchStages.MATCH_STARTED,
+        MatchStages.HALF_BREAK,
+        MatchStages.SECOND_HALF_STARTED,
+        MatchStages.MATCH_ENDED,
     ];
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
 
@@ -243,9 +303,9 @@ const FootballScoreboard: React.FC = () => {
                             teamLogo="https://secure.cache.images.core.optasports.com/soccer/teams/150x150/676.png"
                             results={[
                                 "undefinedResult",
-                                "win",
                                 "lose",
-                                "draw",
+                                "win",
+                                "win",
                                 "win",
                             ]}
                         />
@@ -274,7 +334,7 @@ const FootballScoreboard: React.FC = () => {
                                 "undefinedResult",
                                 "win",
                                 "win",
-                                "win",
+                                "draw",
                                 "win",
                             ]}
                         />
