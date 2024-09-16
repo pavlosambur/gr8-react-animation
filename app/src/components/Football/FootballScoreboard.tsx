@@ -9,11 +9,9 @@ enum MatchStages {
     MATCH_ENDED = "Match ended",
 }
 
-interface MatchTimerProps {
-    initialMinutes: number;
-}
-
-const MatchTimer: React.FC<MatchTimerProps> = ({ initialMinutes }) => {
+const MatchTimer: React.FC<{ initialMinutes: number }> = ({
+    initialMinutes,
+}) => {
     const [secondsElapsed, setSecondsElapsed] = useState(initialMinutes * 60); // Переводим минуты в секунды
 
     useEffect(() => {
@@ -35,12 +33,11 @@ const MatchTimer: React.FC<MatchTimerProps> = ({ initialMinutes }) => {
     );
 };
 
-interface TeamInfoProps {
+const TeamInfo: React.FC<{
     teamName: string;
     teamLogo: string;
     results: string[];
-}
-const TeamInfo: React.FC<TeamInfoProps> = ({ teamName, teamLogo, results }) => {
+}> = ({ teamName, teamLogo, results }) => {
     const colorMap: { [key: string]: string } = {
         win: "bg-win",
         lose: "bg-lose",
@@ -72,16 +69,14 @@ const TeamInfo: React.FC<TeamInfoProps> = ({ teamName, teamLogo, results }) => {
     );
 };
 
-interface ScoreDisplayProps {
+const ScoreDisplay: React.FC<{
     matchHomeScore: number;
     matchAwayScore: number;
     curentStage: string;
     nextStage: string;
     firstHalfHomeScore?: number | null;
     firstHalfAwayScore?: number | null;
-}
-
-const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
+}> = ({
     matchHomeScore,
     matchAwayScore,
     curentStage,
@@ -204,16 +199,11 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
     );
 };
 
-interface H2HSectionProps {
+const H2HSection: React.FC<{
     homeWins: number;
     draws: number;
     awayWins: number;
-}
-const H2HSection: React.FC<H2HSectionProps> = ({
-    homeWins,
-    draws,
-    awayWins,
-}) => {
+}> = ({ homeWins, draws, awayWins }) => {
     return (
         <div className="flex flex-row justify-center mt-1 gap-x-[6px]">
             {/* home wins */}
