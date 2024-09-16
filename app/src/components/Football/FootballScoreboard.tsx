@@ -12,14 +12,14 @@ enum MatchStages {
 const MatchTimer: React.FC<{ initialMinutes: number }> = ({
     initialMinutes,
 }) => {
-    const [secondsElapsed, setSecondsElapsed] = useState(initialMinutes * 60); // Переводим минуты в секунды
+    const [secondsElapsed, setSecondsElapsed] = useState(initialMinutes * 60);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setSecondsElapsed((prev) => prev + 1);
-        }, 1000); // Обновляем каждую секунду
+        }, 1000);
 
-        return () => clearInterval(interval); // Очищаем интервал при размонтировании
+        return () => clearInterval(interval);
     }, []);
 
     const minutes = Math.floor(secondsElapsed / 60);
@@ -85,8 +85,8 @@ const ScoreDisplay: React.FC<{
 }) => {
     const stageRef = useRef<HTMLDivElement>(null);
     const [displayStage, setDisplayStage] = useState(curentStage);
-    const [showTimer, setShowTimer] = useState(false); // Состояние для отображения таймера
-    const [initialMinutes, setInitialMinutes] = useState(0); // Добавляем состояние для начальных минут таймера
+    const [showTimer, setShowTimer] = useState(false);
+    const [initialMinutes, setInitialMinutes] = useState(0);
 
     useEffect(() => {
         const timeline = gsap.timeline();
