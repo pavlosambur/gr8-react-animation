@@ -246,7 +246,6 @@ const H2HSection: React.FC<H2HSectionProps> = ({
             <div className="flex flex-col text-[10px]">
                 <span className="text-textTitle">{draws}</span>
                 <span className="text-textDisable">D</span>{" "}
-                {/* D обозначает Draw (ничья) */}
             </div>
             {/* divider */}
             <div className="h-full w-px bg-dividerMain"></div>
@@ -281,8 +280,9 @@ const FootballScoreboard: React.FC = () => {
         MatchStages.SECOND_HALF_STARTED,
         MatchStages.MATCH_ENDED,
     ];
+    // match stage hooks
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
-
+    // match stage
     const handleStageChange = () => {
         setCurrentStageIndex(
             (prevIndex) => (prevIndex + 1) % matchStages.length
