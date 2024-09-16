@@ -234,12 +234,34 @@ const ChangeMatchStage: React.FC<{
     nextStage: string;
 }> = ({ onStageChange, nextStage }) => {
     return (
-        <button
-            className="bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-2 px-4 rounded w-80 self-auto"
+        <div
+            className="flex items-center justify-center bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-px px-4 rounded w-80 h-7 self-auto cursor-pointer"
             onClick={onStageChange}
         >
             Change match stage to: {nextStage}
-        </button>
+        </div>
+    );
+};
+
+const UpdateScore: React.FC<{
+    onHomeTeamScored: () => void;
+    onAwayTeamScored: () => void;
+}> = ({ onHomeTeamScored, onAwayTeamScored }) => {
+    return (
+        <div className="flex flex-rov w-full">
+            <div
+                className="flex items-center justify-center bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-px px-4 rounded w-80 h-7 self-auto cursor-pointer"
+                onClick={onHomeTeamScored}
+            >
+                Home Goal +
+            </div>
+            <div
+                className="flex items-center justify-center bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-px px-4 rounded w-80 h-7 self-auto cursor-pointer"
+                onClick={onAwayTeamScored}
+            >
+                Home Goal +
+            </div>
+        </div>
     );
 };
 
@@ -253,6 +275,7 @@ const FootballScoreboard: React.FC = () => {
     ];
     // match stage hooks
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
+
     // match stage
     const handleStageChange = () => {
         setCurrentStageIndex(
@@ -261,6 +284,8 @@ const FootballScoreboard: React.FC = () => {
     };
     const nextStageIndex = (currentStageIndex + 1) % matchStages.length;
     const nextStage = matchStages[nextStageIndex];
+    // end match stage
+
     return (
         <div className="flex w-full text-black">
             <div className="flex w-1/2 py-5 justify-center">
@@ -314,7 +339,7 @@ const FootballScoreboard: React.FC = () => {
             </div>
             <div className="flex w-1/2 py-5 justify-center">
                 {/* change match stage */}
-                <div className="w-full justify-center">
+                <div className="flex w-full justify-center">
                     <ChangeMatchStage
                         onStageChange={handleStageChange}
                         nextStage={nextStage}
