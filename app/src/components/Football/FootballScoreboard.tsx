@@ -94,57 +94,44 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
     const [initialMinutes, setInitialMinutes] = useState(0); // Добавляем состояние для начальных минут таймера
 
     useEffect(() => {
-        const timeline = gsap.timeline(); // Создаем GSAP таймлайн
-
-        // Шаг 1: Исчезновение текущего элемента (таймер или текст)
+        const timeline = gsap.timeline();
         timeline.to(stageRef.current, {
             opacity: 0,
             duration: 1,
             ease: "power2.out",
         });
 
-        // Шаг 2: Проверка стадии для анимации появления новой стадии или таймера
         if (
             curentStage === MatchStages.MATCH_STARTED ||
             curentStage === MatchStages.SECOND_HALF_STARTED
         ) {
-            // Для "Match started" и "Second half" сначала показываем текст стадии, а затем таймер
-
-            // Шаг 3: Появление текста стадии матча
             timeline
                 .call(() => {
-                    setDisplayStage(curentStage); // Меняем текст на новую стадию
-                    setShowTimer(false); // Убираем таймер (если был активен)
+                    setDisplayStage(curentStage);
+                    setShowTimer(false);
                 })
                 .to(stageRef.current, {
-                    opacity: 1, // Появление текста новой стадии
+                    opacity: 1,
                     duration: 1,
                     ease: "power2.out",
                 })
-
-                // Шаг 4: Исчезновение текста стадии перед появлением таймера
                 .to(stageRef.current, {
-                    opacity: 0, // Исчезновение текста новой стадии
+                    opacity: 0,
                     duration: 0.5,
                     ease: "power2.out",
                 })
                 .call(() => {
-                    // Скрываем текст и показываем таймер
-                    setShowTimer(true); // Показываем таймер
-
-                    // Устанавливаем начальные минуты для таймера в зависимости от стадии
+                    setShowTimer(true);
                     if (curentStage === MatchStages.MATCH_STARTED) {
-                        setInitialMinutes(0); // Для первого тайма
+                        setInitialMinutes(0);
                     } else if (
                         curentStage === MatchStages.SECOND_HALF_STARTED
                     ) {
-                        setInitialMinutes(45); // Для второго тайма
+                        setInitialMinutes(45);
                     }
                 })
-
-                // Шаг 5: Появление таймера
                 .to(stageRef.current, {
-                    opacity: 1, // Появление таймера
+                    opacity: 1,
                     duration: 1,
                     ease: "power2.out",
                 });
@@ -152,37 +139,31 @@ const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
             curentStage === MatchStages.HALF_BREAK ||
             curentStage === MatchStages.MATCH_ENDED
         ) {
-            // Для "Half-time" и "Match ended" сначала скрываем таймер, а затем показываем текст стадии
-
-            // Шаг 3: Скрытие таймера
             timeline
                 .call(() => {
-                    setShowTimer(false); // Убираем таймер
+                    setShowTimer(false);
                 })
                 .to(stageRef.current, {
-                    opacity: 0, // Исчезновение таймера (если он активен)
+                    opacity: 0,
                     duration: 0,
                     ease: "power2.out",
                 })
-
-                // Шаг 4: Появление текста новой стадии
                 .call(() => {
-                    setDisplayStage(curentStage); // Меняем текст на новую стадию
+                    setDisplayStage(curentStage);
                 })
                 .to(stageRef.current, {
-                    opacity: 1, // Появление текста новой стадии
+                    opacity: 1,
                     duration: 1,
                     ease: "power2.out",
                 });
         } else {
-            // Если стадия не требует таймера, просто обновляем стадию
             timeline
                 .call(() => {
                     setDisplayStage(curentStage);
-                    setShowTimer(false); // Убираем таймер (если он активен)
+                    setShowTimer(false);
                 })
                 .to(stageRef.current, {
-                    opacity: 1, // Появление текста новой стадии
+                    opacity: 1,
                     duration: 1,
                     ease: "power2.out",
                 });
@@ -316,8 +297,8 @@ const FootballScoreboard: React.FC = () => {
                             <ScoreDisplay
                                 matchHomeScore={0}
                                 matchAwayScore={0}
-                                curentStage={matchStages[currentStageIndex]} // Текущая стадия
-                                nextStage={matchStages[nextStageIndex]} // Следующая стадия
+                                curentStage={matchStages[currentStageIndex]}
+                                nextStage={matchStages[nextStageIndex]}
                                 firstHalfHomeScore={null}
                                 firstHalfAwayScore={undefined}
                             />
