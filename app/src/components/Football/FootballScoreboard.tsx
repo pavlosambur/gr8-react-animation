@@ -248,7 +248,7 @@ const UpdateScore: React.FC<{
     onAwayTeamScored: () => void;
 }> = ({ onHomeTeamScored, onAwayTeamScored }) => {
     return (
-        <div className="flex flex-rov w-full">
+        <div className="flex flex-rov w-full space-x-1">
             <div
                 className="flex items-center justify-center bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-px px-4 rounded w-80 h-7 self-auto cursor-pointer"
                 onClick={onHomeTeamScored}
@@ -259,7 +259,7 @@ const UpdateScore: React.FC<{
                 className="flex items-center justify-center bg-zinc-400 hover:bg-zinc-500 text-black font-normal py-px px-4 rounded w-80 h-7 self-auto cursor-pointer"
                 onClick={onAwayTeamScored}
             >
-                Home Goal +
+                Away Goal +
             </div>
         </div>
     );
@@ -276,6 +276,10 @@ const FootballScoreboard: React.FC = () => {
     // match stage hooks
     const [currentStageIndex, setCurrentStageIndex] = useState(0);
 
+    // update score hooks
+    const [homeTeamScore, updateHomeTeamScore] = useState(0);
+    const [awayTeamScore, updateAwayTeamScore] = useState(0);
+
     // match stage
     const handleStageChange = () => {
         setCurrentStageIndex(
@@ -286,6 +290,14 @@ const FootballScoreboard: React.FC = () => {
     const nextStage = matchStages[nextStageIndex];
     // end match stage
 
+    // update score
+    const handleHomeTeamScore = () => {
+        updateHomeTeamScore((homeGoals) => homeGoals + 1);
+    };
+    const handleAwayTeamScore = () => {
+        updateAwayTeamScore((awayGoals) => awayGoals + 1);
+    };
+    // end update score
     return (
         <div className="flex w-full text-black">
             <div className="flex w-1/2 py-5 justify-center">
@@ -310,8 +322,8 @@ const FootballScoreboard: React.FC = () => {
 
                         <div className="flex w-[90px] flex-col">
                             <ScoreDisplay
-                                matchHomeScore={0}
-                                matchAwayScore={0}
+                                matchHomeScore={homeTeamScore}
+                                matchAwayScore={awayTeamScore}
                                 curentStage={matchStages[currentStageIndex]}
                                 nextStage={matchStages[nextStageIndex]}
                                 firstHalfHomeScore={null}
@@ -337,12 +349,18 @@ const FootballScoreboard: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex w-1/2 py-5 justify-center">
+            <div className="flex flex-col w-1/2 py-5 justify-start items-center select-none space-y-1">
                 {/* change match stage */}
-                <div className="flex w-full justify-center">
+                <div>
                     <ChangeMatchStage
                         onStageChange={handleStageChange}
                         nextStage={nextStage}
+                    />
+                </div>
+                <div>
+                    <UpdateScore
+                        onHomeTeamScored={handleHomeTeamScore}
+                        onAwayTeamScored={handleAwayTeamScore}
                     />
                 </div>
             </div>
