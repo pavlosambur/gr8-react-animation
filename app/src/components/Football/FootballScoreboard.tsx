@@ -84,9 +84,39 @@ const ScoreDisplay: React.FC<{
     firstHalfAwayScore,
 }) => {
     const stageRef = useRef<HTMLDivElement>(null);
+    const homeScoreContainerRef = useRef<HTMLDivElement>(null);
+    const awayScoreContainerRef = useRef<HTMLDivElement>(null);
     const [displayStage, setDisplayStage] = useState(curentStage);
     const [showTimer, setShowTimer] = useState(false);
     const [initialMinutes, setInitialMinutes] = useState(0);
+
+    const animateScoreChange = (
+        ref: React.RefObject<HTMLDivElement>,
+        newValue: number
+    ) => {
+        const current = ref.current;
+        if (current) {
+            const newSpan = document.createElement("span");
+            newSpan.textContent = newValue.toString();
+            current.appendChild(newSpan);
+
+            gsap.fromTo(
+                current,
+                { y: "0%" },
+                {
+                    y: "-100%",
+                    duration: 1.2,
+                    ease: "back.in",
+                    onComplete: () => {
+                        while (current.childNodes.length > 1) {
+                            current.removeChild(current.firstChild as Node);
+                        }
+                        gsap.set(current, { y: "0%" });
+                    },
+                }
+            );
+        }
+    };
 
     useEffect(() => {
         const timeline = gsap.timeline();
@@ -165,6 +195,20 @@ const ScoreDisplay: React.FC<{
         }
     }, [curentStage]);
 
+    useEffect(() => {
+        if (homeScoreContainerRef.current) {
+            animateScoreChange(homeScoreContainerRef, matchHomeScore);
+        }
+    }, []);
+
+    useEffect(() => {
+        animateScoreChange(homeScoreContainerRef, matchHomeScore);
+    }, [matchHomeScore]);
+
+    useEffect(() => {
+        animateScoreChange(awayScoreContainerRef, matchAwayScore);
+    }, [matchAwayScore]);
+
     return (
         <div className="flex flex-col items-center">
             <div
@@ -180,16 +224,22 @@ const ScoreDisplay: React.FC<{
             </div>
 
             {/* Счёт матча */}
-            <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[24px] leading-[30px] tracking-[0.8px]">
-                <span>{matchHomeScore}</span>
+            <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[24px] leading-[30px] tracking-[0.8px] h-7 overflow-hidden">
+                <div
+                    className="flex flex-col"
+                    ref={homeScoreContainerRef}
+                ></div>
                 <span>:</span>
-                <span>{matchAwayScore}</span>
+                <div
+                    className="flex flex-col"
+                    ref={awayScoreContainerRef}
+                ></div>
             </div>
 
             {/* Счёт первого тайма */}
             {firstHalfHomeScore !== undefined &&
                 firstHalfAwayScore !== undefined && (
-                    <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] text-textLive">
+                    <div className="flex flex-row justify-center font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] text-textLive overflow-hidden h-3">
                         <span>{firstHalfHomeScore}</span>
                         <span>:</span>
                         <span>{firstHalfAwayScore}</span>

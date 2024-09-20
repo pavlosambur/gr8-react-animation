@@ -3,14 +3,9 @@ import classNames from "classnames";
 
 import FootballScoreboard from "./Football/FootballScoreboard";
 
-interface SportSectionName {
-    sportName: string;
-}
+const SportSection: React.FC<{ sportName: string }> = ({ sportName }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-const SportSection: React.FC<SportSectionName> = ({ sportName }) => {
-    const [isExpanded, setIsExpanded] = useState(true); // Состояние для управления фоновым изображением
-
-    // Динамическое добавление классов в зависимости от состояния
     const mainDivClass = classNames(
         "flex",
         "flex-auto",
@@ -65,7 +60,7 @@ const SportSection: React.FC<SportSectionName> = ({ sportName }) => {
         <>
             <div
                 className={mainDivClass}
-                onClick={() => setIsExpanded(!isExpanded)} // Меняем состояние при клике
+                onClick={() => setIsExpanded(!isExpanded)}
             >
                 <span className={spanClass}>{sportName}</span>
             </div>
