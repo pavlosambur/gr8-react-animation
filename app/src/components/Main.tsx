@@ -1,11 +1,11 @@
 // components/Main.tsx
 import React from "react";
-import SportSection from "./SportSection";
+import Sections from "./Sections";
 
 const Main: React.FC = () => {
     return (
         <div className="flex-auto flex flex-col items-center justify-center text-center mx-auto ml-10 mr-10 mt-5 mb-5">
-            <SportSection sportName="Football" />
+            <Sections sportName="Football Scoreboard" />
         </div>
     );
 };

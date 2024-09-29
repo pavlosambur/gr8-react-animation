@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import FootballScoreboard from "./Football/FootballScoreboard";
 
-const SportSection: React.FC<{ sportName: string }> = ({ sportName }) => {
+const Sections: React.FC<{ sportName: string }> = ({ sportName }) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const mainDivClass = classNames(
@@ -48,14 +48,6 @@ const SportSection: React.FC<{ sportName: string }> = ({ sportName }) => {
 
     const spanClass = classNames("font-semibold");
 
-    const renderSportScoreboardComponent = () => {
-        switch (sportName) {
-            case "Football":
-                return <FootballScoreboard />;
-            default:
-                return <div>Sport not found</div>;
-        }
-    };
     return (
         <>
             <div
@@ -65,10 +57,10 @@ const SportSection: React.FC<{ sportName: string }> = ({ sportName }) => {
                 <span className={spanClass}>{sportName}</span>
             </div>
             <div className={secondDivClass}>
-                {renderSportScoreboardComponent()}
+                <FootballScoreboard />
             </div>
         </>
     );
 };
 
-export default SportSection;
+export default Sections;
