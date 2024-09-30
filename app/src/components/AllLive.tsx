@@ -12,10 +12,11 @@ function getCountryCode(countryName: string) {
 
 // https://megapari.com/service-api/LiveFeed/Get1x2_VZip?sports=1&count=1000&gr=824&mode=4&country=2&partner=192&getEmpty=true&virtualSports=true&countryFirst=true&noFilterBlockEvent=true
 
-const FavoriteIconLeague: React.FC<{ size: number; leagueId: string }> = ({
-    size,
-    leagueId,
-}) => {
+const FavoriteIconLeague: React.FC<{
+    size: number;
+    leagueId: string;
+    onClick: () => void;
+}> = ({ size, leagueId, onClick }) => {
     const [isClicked, setIsClicked] = useState(() => {
         const savedState = Cookies.get(`favoriteIconState-${leagueId}`);
         return savedState ? JSON.parse(savedState) : false; // Загружаем состояние из куки или начальное false
@@ -33,6 +34,8 @@ const FavoriteIconLeague: React.FC<{ size: number; leagueId: string }> = ({
         setTimeout(() => {
             setDisableHover(false); // Включаем ховер через 300ms
         }, 700);
+
+        onClick(); // Вызываем функцию изменения приоритета
     };
 
     return (
@@ -249,41 +252,48 @@ const AllLive: React.FC = () => {
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [priorities, setPriorities] = useState<{ [key: string]: number }>({});
+
     const baseUrl = "/gr8-react-animation";
 
     const fetchData = async () => {
         try {
-            const response = await fetch(`${baseUrl}/data.json`); // Путь к файлу в папке public
+            const response = await fetch(`${baseUrl}/data.json`);
             if (!response.ok) {
                 throw new Error("Ошибка загрузки данных");
             }
             const result = await response.json();
-            setData(result.Value); // Сохраняем данные в стейт
+            setData(result.Value);
             setLoading(false);
         } catch (err) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError("Произошла неизвестная ошибка");
-            }
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "Произошла неизвестная ошибка"
+            );
             setLoading(false);
         }
     };
 
     useEffect(() => {
         fetchData();
-        const intervalId = setInterval(fetchData, 1000); // Повторяем запрос каждые 10 секунд
+        const intervalId = setInterval(fetchData, 1000); // Обновление данных каждые 10 секунд
 
         return () => clearInterval(intervalId); // Очищаем интервал при размонтировании компонента
     }, []);
 
-    if (loading) {
-        return <div>Загрузка...</div>;
-    }
+    const togglePriority = (leagueId: string) => {
+        const newPriority = priorities[leagueId] === 0 ? 1 : 0;
+        setPriorities((prevPriorities) => ({
+            ...prevPriorities,
+            [leagueId]: prevPriorities[leagueId] === 0 ? 1 : 0, // 0 для приоритетных, 1 для остальных
+        }));
 
-    if (error) {
-        return <div>Ошибка: {error}</div>;
-    }
+        // Сохраняем приоритет в куки
+        Cookies.set(`leaguePriority-${leagueId}`, JSON.stringify(newPriority), {
+            expires: 365,
+        });
+    };
 
     // Группируем матчи по League ID (LI)
     const groupedMatches = data.reduce((acc: any, match: any) => {
@@ -294,6 +304,27 @@ const AllLive: React.FC = () => {
         acc[leagueId].push(match);
         return acc;
     }, {});
+
+    useEffect(() => {
+        // Загружаем приоритеты из куки после инициализации groupedMatches
+        const savedPriorities: Record<string, number> = {};
+        Object.keys(groupedMatches).forEach((leagueId) => {
+            const savedPriority = Cookies.get(`leaguePriority-${leagueId}`);
+            if (savedPriority) {
+                savedPriorities[leagueId] = JSON.parse(savedPriority);
+            }
+        });
+
+        setPriorities(savedPriorities);
+    }, [data]); // Убедись, что зависимость стоит от data
+
+    if (loading) {
+        return <div>Загрузка...</div>;
+    }
+
+    if (error) {
+        return <div>Ошибка: {error}</div>;
+    }
 
     return (
         <div className="flex flex-col w-full bg-[var(--background-secondary)] justify-start px-1">
@@ -313,17 +344,17 @@ const AllLive: React.FC = () => {
 
             {/* Рендерим сгруппированные матчи */}
             {Object.keys(groupedMatches).map((leagueId) => {
-                const matches = groupedMatches[leagueId]; // Все матчи для текущего leagueId
-                const isSticky = matches.length >= 4; // Проверяем, есть ли больше 3 матчей
+                const matches = groupedMatches[leagueId];
+                const isSticky = matches.length >= 4;
+                const orderClass =
+                    priorities[leagueId] === 0 ? "order-0" : "order-1"; // Используем приоритеты из состояния или по умолчанию
 
                 return (
-                    // Блок матчей одной лиги начинается
                     <div
                         key={leagueId}
-                        className="flex flex-col w-full bg-[var(--background-main)] rounded-2xl mb-2"
+                        className={`flex flex-col w-full bg-[var(--background-main)] rounded-2xl mb-2 ${orderClass}`}
                     >
                         <div className="flex w-full flex-col">
-                            {/* Заголовок лиги с условным sticky */}
                             <div
                                 className={`${
                                     isSticky ? "sticky top-0" : ""
@@ -331,23 +362,24 @@ const AllLive: React.FC = () => {
                             >
                                 <div className="flex items-center">
                                     <LeagueTitle
-                                        countryCode={matches[0].CE} // Берем страну из первого матча
-                                        leagueName={matches[0].LE} // Берем название лиги из первого матча
+                                        countryCode={matches[0].CE}
+                                        leagueName={matches[0].LE}
                                     />
                                 </div>
                                 <FavoriteIconLeague
                                     size={4}
                                     leagueId={matches[0].LI}
+                                    onClick={() =>
+                                        togglePriority(matches[0].LI)
+                                    }
                                 />
                             </div>
 
-                            {/* Рендерим матчи внутри лиги */}
                             {matches.map((match: any, index: number) => (
                                 <div
                                     key={index}
                                     className="flex flex-row w-full border-t-[var(--divider-main)] border-t px-4 gap-2"
                                 >
-                                    {/* Блок одного матча */}
                                     <MatchData
                                         outcomeCounter={match.EC}
                                         team1IMG={match.O1IMG}
@@ -361,7 +393,6 @@ const AllLive: React.FC = () => {
                             ))}
                         </div>
                     </div>
-                    // Блок матчей одной лиги заканчивается
                 );
             })}
         </div>
