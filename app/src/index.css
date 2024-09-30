@@ -194,9 +194,11 @@ body {
     --icon-header-active: #c7e914;
     --icon-header-inactive: #b7b7b7;
     --icon-hover: #a3a2a2;
+    --icon-hover-v1: #a0b90f;
     --icon-inversion: #292621;
     --icon-logotype: #292621;
     --icon-main: #b7b7b7;
+    --icon-main-v1: #b7b7b74d;
     --icon-notification: #ff3333;
     --icon-primary: #c7e914;
     --icon-primary-control: #292621;
