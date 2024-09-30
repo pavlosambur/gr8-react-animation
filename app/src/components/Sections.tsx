@@ -60,9 +60,7 @@ const Sections: React.FC<{ sportName: string }> = ({ sportName }) => {
                 <FootballScoreboard />
             </div>
             <div className="w-full h-4">
-                <a href="https://pavlosambur.github.io/gr8-react-animation/en/all-live">
-                    test
-                </a>
+                <a href="#/en/alllive">test</a>
             </div>
         </>
     );

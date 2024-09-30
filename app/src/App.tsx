@@ -1,16 +1,16 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, HashRouter } from "react-router-dom";
 import Main from "./components/Main";
-import AllLive from "./components/All-live";
+import AllLive from "./components/AllLive";
 
 const App: React.FC = () => {
     return (
-        <div className="flex justify-center">
+        <HashRouter>
             <Routes>
                 {/* Главная страница */}
                 <Route path="/" element={<Main />} />
-                <Route path="/en/all-live" element={<AllLive />} />
+                <Route path="/en/alllive" element={<AllLive />} />
             </Routes>
-        </div>
+        </HashRouter>
     );
 };
 
