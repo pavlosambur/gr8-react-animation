@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import { iso31661 } from "iso-3166";
-import Cookies from "js-cookie";
 
 function getCountryCode(countryName: string) {
     const country = iso31661.find(
@@ -12,74 +11,20 @@ function getCountryCode(countryName: string) {
 
 // https://megapari.com/service-api/LiveFeed/Get1x2_VZip?sports=1&count=1000&gr=824&mode=4&country=2&partner=192&getEmpty=true&virtualSports=true&countryFirst=true&noFilterBlockEvent=true
 
-// const FavoriteIconLeague: React.FC<{ size: number }> = ({ size }) => {
-//     return (
-//         <div className="flex w-4 h-4">
-//             <span>
-//                 <svg
-//                     className={`w-${size} h-${size}`}
-//                     viewBox="0 0 24 24"
-//                     fill="none"
-//                     xmlns="http://www.w3.org/2000/svg"
-//                 >
-//                     <path
-//                         d="M11.9499 6.1L13.5526 10.3H18.0601L14.5543 13.3L15.8564 17.6L11.9499 15.1L8.04341 17.6L9.34558 13.3L5.83974 10.3H10.3472L11.9499 6.1ZM11.9499 2C11.0484 2 10.7479 4 8.94491 8.3H3.43573C1.83306 8.3 1.53256 9.2 2.73456 10.2L7.04174 14C6.14024 17.6 4.23707 21 5.9399 21C6.74124 21 7.24207 20.4 11.9499 17.5C16.6578 20.4 17.1586 21 17.9599 21C19.6628 21 17.7596 17.6 16.8581 14L21.2654 10.2C22.4674 9.2 22.1669 8.3 20.5643 8.3H14.9549C13.1519 4.1 12.9516 2 11.9499 2Z"
-//                         fill="var(--icon-main)"
-//                     />
-//                 </svg>
-//             </span>
-//         </div>
-//     );
-// };
-
-const FavoriteIconLeague: React.FC<{ size: number; leagueId: string }> = ({
-    size,
-    leagueId,
-}) => {
-    const [isClicked, setIsClicked] = useState(() => {
-        const savedState = Cookies.get(`favoriteIconState-${leagueId}`);
-        return savedState ? JSON.parse(savedState) : false; // Загружаем состояние из куки или начальное false
-    });
-    const [disableHover, setDisableHover] = useState(false);
-
-    const handleClick = () => {
-        const newState = !isClicked;
-        setIsClicked(newState); // Меняем состояние при клике
-        Cookies.set(`favoriteIconState-${leagueId}`, JSON.stringify(newState), {
-            expires: 365,
-        }); // Сохраняем состояние в куки
-
-        setDisableHover(true); // Отключаем ховер после клика
-        setTimeout(() => {
-            setDisableHover(false); // Включаем ховер через 300ms
-        }, 1000);
-    };
-
+const FavoriteIconLeague: React.FC<{ size: number }> = ({ size }) => {
     return (
-        <div className={`flex w-${size} h-${size} group`} onClick={handleClick}>
+        <div className="flex w-4 h-4">
             <span>
                 <svg
-                    className={`w-${size} h-${size} transition-colors duration-300 ${
-                        isClicked
-                            ? `fill-[var(--icon-hover-v1)] ${
-                                  disableHover
-                                      ? ""
-                                      : "group-hover:fill-[var(--icon-main-v1)]"
-                              }`
-                            : `fill-[var(--icon-main-v1)] ${
-                                  disableHover
-                                      ? ""
-                                      : "group-hover:fill-[var(--icon-hover-v1)]"
-                              }`
-                    }`}
+                    className={`w-${size} h-${size}`}
                     viewBox="0 0 24 24"
+                    fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                 >
-                    {isClicked ? (
-                        <path d="M11.9499 2C11.0484 2 10.7479 4 8.94491 8.3H3.43573C1.83306 8.3 1.53256 9.2 2.73456 10.2L7.04174 14C6.14024 17.6 4.23707 21 5.9399 21C6.74124 21 7.24207 20.4 11.9499 17.5C16.6578 20.4 17.1586 21 17.9599 21C19.6628 21 17.7596 17.6 16.8581 14L21.2654 10.2C22.4674 9.2 22.1669 8.3 20.5643 8.3H14.9549C13.1519 4.1 12.9516 2 11.9499 2Z" />
-                    ) : (
-                        <path d="M11.9499 6.1L13.5526 10.3H18.0601L14.5543 13.3L15.8564 17.6L11.9499 15.1L8.04341 17.6L9.34558 13.3L5.83974 10.3H10.3472L11.9499 6.1ZM11.9499 2C11.0484 2 10.7479 4 8.94491 8.3H3.43573C1.83306 8.3 1.53256 9.2 2.73456 10.2L7.04174 14C6.14024 17.6 4.23707 21 5.9399 21C6.74124 21 7.24207 20.4 11.9499 17.5C16.6578 20.4 17.1586 21 17.9599 21C19.6628 21 17.7596 17.6 16.8581 14L21.2654 10.2C22.4674 9.2 22.1669 8.3 20.5643 8.3H14.9549C13.1519 4.1 12.9516 2 11.9499 2Z" />
-                    )}
+                    <path
+                        d="M11.9499 6.1L13.5526 10.3H18.0601L14.5543 13.3L15.8564 17.6L11.9499 15.1L8.04341 17.6L9.34558 13.3L5.83974 10.3H10.3472L11.9499 6.1ZM11.9499 2C11.0484 2 10.7479 4 8.94491 8.3H3.43573C1.83306 8.3 1.53256 9.2 2.73456 10.2L7.04174 14C6.14024 17.6 4.23707 21 5.9399 21C6.74124 21 7.24207 20.4 11.9499 17.5C16.6578 20.4 17.1586 21 17.9599 21C19.6628 21 17.7596 17.6 16.8581 14L21.2654 10.2C22.4674 9.2 22.1669 8.3 20.5643 8.3H14.9549C13.1519 4.1 12.9516 2 11.9499 2Z"
+                        fill="var(--icon-main)"
+                    />
                 </svg>
             </span>
         </div>
@@ -260,6 +205,7 @@ const MatchData: React.FC<{
                     </div>
                 </div>
             </div>
+            {/* <FavoriteIconMatch size={4} /> */}
         </>
     );
 };
@@ -315,77 +261,72 @@ const AllLive: React.FC = () => {
     }, {});
 
     return (
-        <HelmetProvider>
-            <div className="flex flex-col w-full bg-[var(--background-secondary)] justify-start px-1">
-                <Helmet>
-                    <title>All live</title>
-                </Helmet>
-                <div className="flex w-full px-4 py-2" data-id="sport-title">
-                    <img
-                        src="https://mdlr.tech/assets/images/brand5/mdpi/img_sport_f.png"
-                        alt=""
-                        className="inline-block w-[22px] h-[22px]"
-                    />
-                    <span className="ml-2 font-sf-pro-display text-[var(--text-body)] font-semibold text-[18px] leading-[22px] tracking-[0.6px] normal-case">
-                        Football
-                    </span>
-                </div>
+        <div className="flex flex-col w-full bg-[var(--background-secondary)] justify-start px-1">
+            <Helmet>
+                <title>All live</title>
+            </Helmet>
+            <div className="flex w-full px-4 py-2" data-id="sport-title">
+                <img
+                    src="https://mdlr.tech/assets/images/brand5/mdpi/img_sport_f.png"
+                    alt=""
+                    className="inline-block w-[22px] h-[22px]"
+                />
+                <span className="ml-2 font-sf-pro-display text-[var(--text-body)] font-semibold text-[18px] leading-[22px] tracking-[0.6px] normal-case">
+                    Football
+                </span>
+            </div>
 
-                {/* Рендерим сгруппированные матчи */}
-                {Object.keys(groupedMatches).map((leagueId) => {
-                    const matches = groupedMatches[leagueId]; // Все матчи для текущего leagueId
-                    const isSticky = matches.length >= 4; // Проверяем, есть ли больше 3 матчей
+            {/* Рендерим сгруппированные матчи */}
+            {Object.keys(groupedMatches).map((leagueId) => {
+                const matches = groupedMatches[leagueId]; // Все матчи для текущего leagueId
+                const isSticky = matches.length >= 4; // Проверяем, есть ли больше 3 матчей
 
-                    return (
-                        // Блок матчей одной лиги начинается
-                        <div
-                            key={leagueId}
-                            className="flex flex-col w-full bg-[var(--background-main)] rounded-2xl mb-2"
-                        >
-                            <div className="flex w-full flex-col">
-                                {/* Заголовок лиги с условным sticky */}
-                                <div
-                                    className={`${
-                                        isSticky ? "sticky top-0" : ""
-                                    } bg-[var(--background-main)] rounded-2xl flex w-full px-4 h-10 items-center justify-between`}
-                                >
-                                    <div className="flex items-center">
-                                        <LeagueTitle
-                                            countryCode={matches[0].CE} // Берем страну из первого матча
-                                            leagueName={matches[0].LE} // Берем название лиги из первого матча
-                                        />
-                                    </div>
-                                    <FavoriteIconLeague
-                                        size={4}
-                                        leagueId={matches[0].LI}
+                return (
+                    // Блок матчей одной лиги начинается
+                    <div
+                        key={leagueId}
+                        className="flex flex-col w-full bg-[var(--background-main)] rounded-2xl mb-2"
+                    >
+                        <div className="flex w-full flex-col">
+                            {/* Заголовок лиги с условным sticky */}
+                            <div
+                                className={`${
+                                    isSticky ? "sticky top-0" : ""
+                                } bg-[var(--background-main)] rounded-2xl flex w-full px-4 h-10 items-center justify-between`}
+                            >
+                                <div className="flex items-center">
+                                    <LeagueTitle
+                                        countryCode={matches[0].CE} // Берем страну из первого матча
+                                        leagueName={matches[0].LE} // Берем название лиги из первого матча
                                     />
                                 </div>
-
-                                {/* Рендерим матчи внутри лиги */}
-                                {matches.map((match: any, index: number) => (
-                                    <div
-                                        key={index}
-                                        className="flex flex-row w-full border-t-[var(--divider-main)] border-t px-2 sm:px-4 gap-2"
-                                    >
-                                        {/* Блок одного матча */}
-                                        <MatchData
-                                            outcomeCounter={match.EC}
-                                            team1IMG={match.O1IMG}
-                                            team2IMG={match.O2IMG}
-                                            team1Name={match.O1E}
-                                            team2Name={match.O2E}
-                                            team1Score={match.SC.FS.S1 ?? 0}
-                                            team2Score={match.SC.FS.S2 ?? 0}
-                                        />
-                                    </div>
-                                ))}
+                                <FavoriteIconLeague size={4} />
                             </div>
+
+                            {/* Рендерим матчи внутри лиги */}
+                            {matches.map((match: any, index: number) => (
+                                <div
+                                    key={index}
+                                    className="flex flex-row w-full border-t-[var(--divider-main)] border-t px-4 gap-2"
+                                >
+                                    {/* Блок одного матча */}
+                                    <MatchData
+                                        outcomeCounter={match.EC}
+                                        team1IMG={match.O1IMG}
+                                        team2IMG={match.O2IMG}
+                                        team1Name={match.O1E}
+                                        team2Name={match.O2E}
+                                        team1Score={match.SC.FS.S1 ?? 0}
+                                        team2Score={match.SC.FS.S2 ?? 0}
+                                    />
+                                </div>
+                            ))}
                         </div>
-                        // Блок матчей одной лиги заканчивается
-                    );
-                })}
-            </div>
-        </HelmetProvider>
+                    </div>
+                    // Блок матчей одной лиги заканчивается
+                );
+            })}
+        </div>
     );
 };
 

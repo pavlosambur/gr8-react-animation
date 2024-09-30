@@ -15,16 +15,13 @@
     "dependencies": {
         "gsap": "^3.12.5",
         "iso-3166": "^4.3.0",
-        "js-cookie": "^3.0.5",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-helmet": "^6.1.0",
-        "react-helmet-async": "^2.0.5",
         "react-router-dom": "^6.26.2"
     },
     "devDependencies": {
         "@eslint/js": "^9.8.0",
-        "@types/js-cookie": "^3.0.6",
         "@types/node": "^22.7.4",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0",
