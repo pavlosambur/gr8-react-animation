@@ -1,8 +1,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import dotenv from "dotenv";
 
-// https://vitejs.dev/config/
+dotenv.config();
+
 export default defineConfig({
-    base: "/gr8-react-animation/",
+    base: process.env.BASE_PATH,
     plugins: [react()],
 });
