@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+    react-app:
+        build:
+            context: ./react
+            dockerfile: Dockerfile
+        ports:
+            - "80:80" # Порт 80 на локальной машине будет проброшен на порт 80 контейнера
+        volumes:
+            - ./react:/app # Монтирование локальной папки с кодом в контейнер
