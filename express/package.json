@@ -1,0 +1,19 @@
+{
+    "name": "express",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "ts-node": "^10.9.2",
+        "typescript": "^5.6.3"
+    },
+    "dependencies": {
+        "@types/express": "^5.0.0",
+        "axios": "^1.7.7",
+        "express": "^4.21.1"
+    }
+}
