@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet";
 import { fetchData, groupMatchesByLeague } from "../utils/utils";
 import Cookies from "js-cookie";
 
-import LeagueBlock from "./utility-components/LeagueBlock";
+import AllLiveLeagueBlock from "./all-live/AllLiveLeagueBlock";
 
 // https://megapari.com/service-api/LiveFeed/Get1x2_VZip?sports=1&count=1000&gr=824&mode=4&country=2&partner=192&getEmpty=true&virtualSports=true&countryFirst=true&noFilterBlockEvent=true
 
@@ -13,14 +13,26 @@ const AllLive: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [priorities, setPriorities] = useState<{ [key: string]: number }>({});
 
+    const fetchInterval = 5000;
+
     useEffect(() => {
-        fetchData(setData, setLoading, setError);
+        const fetchDataWithRetry = async (retries: number = 3) => {
+            while (retries > 0) {
+                try {
+                    await fetchData(setData, setLoading, setError);
+                    return;
+                } catch (error) {
+                    console.error("Ошибка при получении данных:", error);
+                    retries -= 1;
+                    if (retries === 0) {
+                        setError("Failed to fetch after multiple attempts");
+                    }
+                }
+            }
+        };
 
-        const intervalId = setInterval(
-            () => fetchData(setData, setLoading, setError),
-            1000
-        );
-
+        fetchDataWithRetry();
+        const intervalId = setInterval(fetchDataWithRetry, fetchInterval);
         return () => clearInterval(intervalId);
     }, []);
 
@@ -74,7 +86,7 @@ const AllLive: React.FC = () => {
             </div>
 
             {Object.keys(groupedMatches).map((leagueId) => (
-                <LeagueBlock
+                <AllLiveLeagueBlock
                     key={leagueId}
                     leagueId={leagueId}
                     matches={groupedMatches[leagueId]}

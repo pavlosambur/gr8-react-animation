@@ -1,22 +1,15 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import FavoriteIconLeague from "./FavoriteIconLeague";
-import LeagueTitle from "./LeagueTitle";
-import MatchBlock from "./MatchBlock";
+import AllLiveFavoriteIconLeague from "./AllLiveFavoriteIconLeague";
+import AllLiveLeagueTitle from "./AllLiveLeagueTitle";
+import AllLiveMatchBlock from "./AllLiveMatchBlock";
 
-interface LeagueBlockProps {
+const AllLiveLeagueBlock: React.FC<{
     leagueId: string;
     matches: any[];
     priority: number;
     togglePriority: (leagueId: string) => void;
-}
-
-const LeagueBlock: React.FC<LeagueBlockProps> = ({
-    leagueId,
-    matches,
-    priority,
-    togglePriority,
-}) => {
+}> = ({ leagueId, matches, priority, togglePriority }) => {
     const [isOpen, setIsOpen] = useState(true); // Для скрытия/открытия матчей
     const contentRef = useRef<HTMLDivElement>(null); // Реф для контента
 
@@ -50,7 +43,7 @@ const LeagueBlock: React.FC<LeagueBlockProps> = ({
                         onClick={handleToggleMatches}
                     >
                         <div className="flex items-center">
-                            <LeagueTitle
+                            <AllLiveLeagueTitle
                                 countryCode={matches[0].CE}
                                 leagueName={matches[0].LE}
                             />
@@ -75,7 +68,7 @@ const LeagueBlock: React.FC<LeagueBlockProps> = ({
                             </span>
                         </motion.div>
                     </div>
-                    <FavoriteIconLeague
+                    <AllLiveFavoriteIconLeague
                         size={4}
                         leagueId={leagueId}
                         onClick={handleFavoriteClick}
@@ -90,7 +83,7 @@ const LeagueBlock: React.FC<LeagueBlockProps> = ({
                     ref={contentRef}
                 >
                     {matches.map((match, index) => (
-                        <MatchBlock key={index} match={match} />
+                        <AllLiveMatchBlock key={index} match={match} />
                     ))}
                 </motion.div>
             </div>
@@ -98,4 +91,4 @@ const LeagueBlock: React.FC<LeagueBlockProps> = ({
     );
 };
 
-export default LeagueBlock;
+export default AllLiveLeagueBlock;

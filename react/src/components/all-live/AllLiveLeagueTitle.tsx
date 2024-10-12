@@ -1,10 +1,10 @@
 import React from "react";
 import { getCountryCode } from "../../utils/utils";
 
-const LeagueTitle: React.FC<{ countryCode: string; leagueName: string }> = ({
-    countryCode,
-    leagueName,
-}) => {
+const AllLiveLeagueTitle: React.FC<{
+    countryCode: string;
+    leagueName: string;
+}> = ({ countryCode, leagueName }) => {
     return (
         <>
             <img
@@ -21,4 +21,4 @@ const LeagueTitle: React.FC<{ countryCode: string; leagueName: string }> = ({
     );
 };
 
-export default LeagueTitle;
+export default AllLiveLeagueTitle;

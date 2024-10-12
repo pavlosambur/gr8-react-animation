@@ -1,9 +1,11 @@
 import React from "react";
 
-import FavoriteIconMatch from "./FavoriteIconMatch";
-import OddField from "./OddField";
+import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
+import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
+import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
+import OddField from "../utility-components/OddField";
 
-const MatchData: React.FC<{
+const AllLiveMatchData: React.FC<{
     outcomeCounter: string;
     team1IMG: string;
     team1Name: string;
@@ -27,7 +29,7 @@ const MatchData: React.FC<{
                     <div className="flex w-full mb-[6px]">
                         <div className="flex-1 flex items-center gap-1">
                             <span className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)]">
-                                1st half 34'
+                                1st half 36'
                             </span>
                             <span className="inline-flex w-[14px] h-[14px]">
                                 <svg
@@ -77,39 +79,19 @@ const MatchData: React.FC<{
                     </div>
                     <div className="flex w-full gap-2 flex-wrap">
                         <div className="flex-1 min-w-[300px] sm:w-1/3 gap-2 flex flex-col">
-                            <div className="flex flex-row w-full gap-2 items-center">
-                                <img
-                                    className="w-6 h-6"
-                                    src={`https://v3.traincdn.com/resized/size24/sfiles/logo_teams/${
-                                        team1IMG[0].split(".")[0]
-                                    }.webp`}
-                                    alt={team1Name}
-                                />
-                                <span className="flex-1 font-sf-pro text-[var(--text-title)] font-normal text-[14px] leading-[18px] tracking-[-0.15px] normal-case">
-                                    {team1Name}
-                                </span>
-                                <span className="font-sf-pro-display text-[var(--text-live)] font-semibold text-[14px] leading-[17px] tracking-[0.6px] normal-case">
-                                    {team1Score ?? 0}
-                                </span>
-                            </div>
-                            <div className="flex flex-row w-full gap-2 items-center">
-                                <img
-                                    className="w-6 h-6"
-                                    src={`https://v3.traincdn.com/resized/size24/sfiles/logo_teams/${
-                                        team2IMG[0].split(".")[0]
-                                    }.webp`}
-                                    alt={team2Name}
-                                />
-                                <span className="flex-1 font-sf-pro text-[var(--text-title)] font-normal text-[14px] leading-[18px] tracking-[-0.15px] normal-case">
-                                    {team2Name}
-                                </span>
-                                <span className="font-sf-pro-display text-[var(--text-live)] font-semibold text-[14px] leading-[17px] tracking-[0.6px] normal-case">
-                                    {team2Score ?? 0}
-                                </span>
-                            </div>
+                            <AllLiveMatchDataTeamInfo
+                                teamIMG={team1IMG}
+                                teamName={team1Name}
+                                teamScore={team1Score}
+                            />
+                            <AllLiveMatchDataTeamInfo
+                                teamIMG={team2IMG}
+                                teamName={team2Name}
+                                teamScore={team2Score}
+                            />
                         </div>
                         <div className="flex order-1 sm:order-2">
-                            <FavoriteIconMatch size={4} />
+                            <AllLiveFavoriteIconMatch size={4} />
                         </div>
 
                         {/* odds */}
@@ -126,4 +108,4 @@ const MatchData: React.FC<{
     );
 };
 
-export default MatchData;
+export default AllLiveMatchData;

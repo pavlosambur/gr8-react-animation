@@ -1,13 +1,9 @@
-import MatchData from "./MatchData";
+import AllLiveMatchData from "./AllLiveMatchData";
 
-interface MatchBlockProps {
-    match: any;
-}
-
-const MatchBlock: React.FC<MatchBlockProps> = ({ match }) => {
+const AllLiveMatchBlock: React.FC<{ match: any }> = ({ match }) => {
     return (
         <div className="flex flex-row w-full first:border-t-0 border-t-[var(--divider-main)] px-4 gap-2">
-            <MatchData
+            <AllLiveMatchData
                 outcomeCounter={match.EC}
                 team1IMG={match.O1IMG}
                 team2IMG={match.O2IMG}
@@ -20,4 +16,4 @@ const MatchBlock: React.FC<MatchBlockProps> = ({ match }) => {
     );
 };
 
-export default MatchBlock;
+export default AllLiveMatchBlock;

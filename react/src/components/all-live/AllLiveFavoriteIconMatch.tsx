@@ -1,6 +1,6 @@
 import React from "react";
 
-const FavoriteIconMatch: React.FC<{ size: number }> = ({ size }) => {
+const AllLiveFavoriteIconMatch: React.FC<{ size: number }> = ({ size }) => {
     return (
         <div className="flex items-center">
             <span>
@@ -20,4 +20,4 @@ const FavoriteIconMatch: React.FC<{ size: number }> = ({ size }) => {
     );
 };
 
-export default FavoriteIconMatch;
+export default AllLiveFavoriteIconMatch;

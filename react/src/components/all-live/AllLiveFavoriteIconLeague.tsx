@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 
-const FavoriteIconLeague: React.FC<{
+const AllLiveFavoriteIconLeague: React.FC<{
     size: number;
     leagueId: string;
     onClick: () => void;
@@ -47,4 +47,4 @@ const FavoriteIconLeague: React.FC<{
     );
 };
 
-export default FavoriteIconLeague;
+export default AllLiveFavoriteIconLeague;

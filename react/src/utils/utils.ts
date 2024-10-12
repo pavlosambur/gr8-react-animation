@@ -14,13 +14,16 @@ export const fetchData = async (
 ) => {
     try {
         const response = await fetch("/gr8-react-animation/data.json");
+
         if (!response.ok) {
-            throw new Error("Ошибка загрузки данных");
+            throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
         }
+
         const result = await response.json();
         setData(result.Value);
         setLoading(false);
     } catch (err) {
+        console.error("Ошибка при загрузке данных:", err);
         setError(
             err instanceof Error ? err.message : "Произошла неизвестная ошибка"
         );
