@@ -7,6 +7,9 @@ import OddField from "../utility-components/OddField";
 
 const AllLiveMatchData: React.FC<{
     outcomeCounter: string;
+    matchTimeStamp?: number;
+    matchBreak?: number;
+    matchCurrentPeriod?: number;
     team1IMG: string;
     team1Name: string;
     team1Score: string;
@@ -15,6 +18,9 @@ const AllLiveMatchData: React.FC<{
     team2Score: string;
 }> = ({
     outcomeCounter,
+    matchTimeStamp = 0,
+    matchBreak = 0,
+    matchCurrentPeriod = 0,
     team1IMG,
     team1Name,
     team1Score,
@@ -28,9 +34,11 @@ const AllLiveMatchData: React.FC<{
                 <div className="flex w-full flex-col">
                     <div className="flex w-full mb-[6px]">
                         <div className="flex-1 flex items-center gap-1">
-                            <span className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)]">
-                                1st half 36'
-                            </span>
+                            <AllLiveMatchDataMatchTimer
+                                matchTimeStamp={matchTimeStamp}
+                                matchBreak={matchBreak}
+                                matchCurrentPeriod={matchCurrentPeriod}
+                            />
                             <span className="inline-flex w-[14px] h-[14px]">
                                 <svg
                                     className="w-full h-full"

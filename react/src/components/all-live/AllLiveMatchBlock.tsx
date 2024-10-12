@@ -5,6 +5,9 @@ const AllLiveMatchBlock: React.FC<{ match: any }> = ({ match }) => {
         <div className="flex flex-row w-full first:border-t-0 border-t-[var(--divider-main)] px-4 gap-2">
             <AllLiveMatchData
                 outcomeCounter={match.EC}
+                matchTimeStamp={match.SC.TS}
+                matchBreak={match.SC.BR}
+                matchCurrentPeriod={match.SC.CP}
                 team1IMG={match.O1IMG}
                 team2IMG={match.O2IMG}
                 team1Name={match.O1E}
