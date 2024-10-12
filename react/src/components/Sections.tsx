@@ -60,7 +60,7 @@ const Sections: React.FC<{ sportName: string }> = ({ sportName }) => {
                 <FootballScoreboard />
             </div>
             <div className="w-full h-4">
-                <a href="#/en/alllive">test</a>
+                <a href="/#/en/alllive">test</a>
             </div>
         </>
     );

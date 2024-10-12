@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import AllLiveFavoriteIconLeague from "./AllLiveFavoriteIconLeague";
 import AllLiveLeagueTitle from "./AllLiveLeagueTitle";
-import AllLiveMatchBlock from "./AllLiveMatchBlock";
+import AllLiveMatchData from "./AllLiveMatchData";
 
 const AllLiveLeagueBlock: React.FC<{
     leagueId: string;
@@ -83,7 +83,21 @@ const AllLiveLeagueBlock: React.FC<{
                     ref={contentRef}
                 >
                     {matches.map((match, index) => (
-                        <AllLiveMatchBlock key={index} match={match} />
+                        <AllLiveMatchData
+                            key={index}
+                            outcomeCounter={match.EC}
+                            matchTimeStamp={match.SC.TS}
+                            matchBreak={match.SC.BR}
+                            matchCurrentPeriod={match.SC.CP}
+                            matchIsRegularTimeEnded={match.SC.TR}
+                            matchIsFinished={match.F}
+                            team1IMG={match.O1IMG}
+                            team2IMG={match.O2IMG}
+                            team1Name={match.O1E}
+                            team2Name={match.O2E}
+                            team1Score={match.SC.FS.S1 ?? 0}
+                            team2Score={match.SC.FS.S2 ?? 0}
+                        />
                     ))}
                 </motion.div>
             </div>

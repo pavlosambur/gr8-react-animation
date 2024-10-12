@@ -4,7 +4,15 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     matchTimeStamp: number;
     matchBreak?: number;
     matchCurrentPeriod?: number;
-}> = ({ matchTimeStamp, matchBreak = 0, matchCurrentPeriod = 0 }) => {
+    matchIsRegularTimeEnded?: number;
+    matchIsFinished?: boolean;
+}> = ({
+    matchTimeStamp,
+    matchBreak = 0,
+    matchCurrentPeriod = 0,
+    matchIsRegularTimeEnded = 0,
+    matchIsFinished = false,
+}) => {
     const [currentTime, setCurrentTime] = useState(matchTimeStamp);
 
     useEffect(() => {
@@ -27,6 +35,10 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         //     if (matchIsFinished == true) return "match ended";
         //     return "end of regular time";
         // }
+        if (matchIsFinished) return "match ended";
+
+        if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
+            return "regular time ended";
 
         // Случай 1: Перерыв
         if (matchBreak === 1) return "half-time";
