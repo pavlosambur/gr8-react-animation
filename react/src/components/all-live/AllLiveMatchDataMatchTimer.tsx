@@ -14,6 +14,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     matchIsFinished = false,
 }) => {
     const [currentTime, setCurrentTime] = useState(matchTimeStamp);
+    const [formattedTime, setFormattedTime] = useState("match not started");
     const divRef = useRef<HTMLDivElement>(null);
     const spanRef = useRef<HTMLSpanElement>(null);
 
@@ -31,44 +32,47 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         }
     }, [matchTimeStamp]);
 
+    // Обновляем `formattedTime` при изменении зависимостей
     useEffect(() => {
-        const adjustWidth = () => {
-            if (divRef.current && spanRef.current) {
-                const widthUnit = 5;
-                const currentDivScrollWidth = divRef.current.scrollWidth;
-                const divStyleWidth = parseFloat(
-                    window.getComputedStyle(divRef.current).width
-                );
-                const spanStyleWidth = parseFloat(
-                    window.getComputedStyle(spanRef.current).width
-                );
+        const formatTime = () => {
+            if (matchIsFinished) return "match ended";
+            if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
+                return "90:00";
 
-                const newWidth =
-                    Math.ceil(currentDivScrollWidth / widthUnit) * widthUnit;
-                if (
-                    currentDivScrollWidth > divStyleWidth ||
-                    divStyleWidth > spanStyleWidth + widthUnit
-                ) {
-                    divRef.current.style.width = `${newWidth}px`;
-                }
+            if (matchBreak === 1) return "half-time";
+
+            if (matchCurrentPeriod === 1 && matchTimeStamp > 2700) {
+                const overtime = currentTime - 2700;
+                const overtimeMinutes = Math.floor(overtime / 60)
+                    .toString()
+                    .padStart(2, "0");
+                const overtimeSeconds = (overtime % 60)
+                    .toString()
+                    .padStart(2, "0");
+                return `45:00 +${overtimeMinutes}:${overtimeSeconds}`;
             }
+
+            if (matchCurrentPeriod === 2 && matchTimeStamp > 5400) {
+                const overtime = currentTime - 5400;
+                const overtimeMinutes = Math.floor(overtime / 60)
+                    .toString()
+                    .padStart(2, "0");
+                const overtimeSeconds = (overtime % 60)
+                    .toString()
+                    .padStart(2, "0");
+                return `90:00 +${overtimeMinutes}:${overtimeSeconds}`;
+            }
+
+            return matchTimeStamp > 0
+                ? `${Math.floor(currentTime / 60)
+                      .toString()
+                      .padStart(2, "0")}:${(currentTime % 60)
+                      .toString()
+                      .padStart(2, "0")}`
+                : "match not started";
         };
 
-        adjustWidth();
-
-        const observer = new ResizeObserver(() => {
-            adjustWidth();
-        });
-
-        if (divRef.current) {
-            observer.observe(divRef.current);
-        }
-
-        return () => {
-            if (divRef.current) {
-                observer.unobserve(divRef.current);
-            }
-        };
+        setFormattedTime(formatTime());
     }, [
         currentTime,
         matchTimeStamp,
@@ -76,48 +80,44 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         matchCurrentPeriod,
         matchIsRegularTimeEnded,
         matchIsFinished,
-        spanRef,
     ]);
 
-    // Форматированное значение времени
-    const formattedTime = () => {
-        if (matchIsFinished) return "match ended";
+    // Обновляем ширину div после изменения formattedTime
+    useEffect(() => {
+        const adjustWidth = () => {
+            // if (spanRef.current && divRef.current) {
+            //     const widthUnit = 7;
+            //     const currentSpanScrollWidth = spanRef.current.scrollWidth;
+            //     // console.log(currentSpanScrollWidth);
+            //     const newWidth =
+            //         Math.ceil(currentSpanScrollWidth / widthUnit) * widthUnit;
+            //     divRef.current.style.width = `${newWidth + widthUnit}px`;
+            // }
 
-        if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
-            return "90:00";
+            if (spanRef.current && divRef.current) {
+                const widthUnit = 5;
+                const divStyleWidth = parseFloat(
+                    window.getComputedStyle(divRef.current).width
+                );
+                const spanStyleWidth = parseFloat(
+                    window.getComputedStyle(spanRef.current).width
+                );
+                const newWidth =
+                    (Math.ceil(spanStyleWidth / widthUnit) + 1) * widthUnit +
+                    widthUnit;
 
-        // Случай 1: Перерыв
-        if (matchBreak === 1) return "half-time";
+                if (
+                    divStyleWidth > newWidth ||
+                    divStyleWidth <= spanStyleWidth
+                ) {
+                    console.log("newWidth ", newWidth);
+                    divRef.current.style.width = `${newWidth}px`;
+                }
+            }
+        };
 
-        // Случай 2: Первый период после 45:00
-        if (matchCurrentPeriod === 1 && matchTimeStamp > 2700) {
-            const overtime = currentTime - 2700;
-            const overtimeMinutes = Math.floor(overtime / 60)
-                .toString()
-                .padStart(2, "0");
-            const overtimeSeconds = (overtime % 60).toString().padStart(2, "0");
-            return `45:00 +${overtimeMinutes}:${overtimeSeconds}`;
-        }
-
-        // Случай 3: Второй период после 90:00
-        if (matchCurrentPeriod === 2 && matchTimeStamp > 5400) {
-            const overtime = currentTime - 5400;
-            const overtimeMinutes = Math.floor(overtime / 60)
-                .toString()
-                .padStart(2, "0");
-            const overtimeSeconds = (overtime % 60).toString().padStart(2, "0");
-            return `90:00 +${overtimeMinutes}:${overtimeSeconds}`;
-        }
-
-        // Обычный случай времени матча
-        return matchTimeStamp > 0
-            ? `${Math.floor(currentTime / 60)
-                  .toString()
-                  .padStart(2, "0")}:${(currentTime % 60)
-                  .toString()
-                  .padStart(2, "0")}`
-            : "match not started";
-    };
+        adjustWidth();
+    }, [formattedTime]);
 
     return (
         <div className="flex">
@@ -125,7 +125,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 ref={divRef}
                 className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
             >
-                <span ref={spanRef}>{formattedTime()}</span>
+                <span ref={spanRef}>{formattedTime}</span>
             </div>
         </div>
     );
