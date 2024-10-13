@@ -95,7 +95,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             // }
 
             if (spanRef.current && divRef.current) {
-                const widthUnit = 5;
+                const widthUnit = 10;
                 const divStyleWidth = parseFloat(
                     window.getComputedStyle(divRef.current).width
                 );
@@ -103,15 +103,13 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                     window.getComputedStyle(spanRef.current).width
                 );
                 const newWidth =
-                    (Math.ceil(spanStyleWidth / widthUnit) + 1) * widthUnit +
-                    widthUnit;
-
+                    (Math.ceil(spanStyleWidth / widthUnit) + 1) * widthUnit;
                 if (
-                    divStyleWidth + widthUnit > newWidth ||
-                    divStyleWidth <= spanStyleWidth + widthUnit
+                    divStyleWidth > newWidth ||
+                    divStyleWidth <= spanStyleWidth + widthUnit / 2 - 1
                 ) {
                     console.log("newWidth ", newWidth);
-                    divRef.current.style.width = `${newWidth + widthUnit}px`;
+                    divRef.current.style.width = `${newWidth}px`;
                 }
             }
         };
@@ -120,13 +118,11 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     }, [formattedTime]);
 
     return (
-        <div className="flex">
-            <div
-                ref={divRef}
-                className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
-            >
-                <span ref={spanRef}>{formattedTime}</span>
-            </div>
+        <div
+            ref={divRef}
+            className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
+        >
+            <span ref={spanRef}>{formattedTime}</span>
         </div>
     );
 };
