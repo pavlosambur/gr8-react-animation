@@ -33,14 +33,21 @@ const AllLiveMatchDataMatchTimer: React.FC<{
 
     useEffect(() => {
         const adjustWidth = () => {
-            if (spanRef.current && divRef.current) {
-                const currentWidth = spanRef.current.offsetWidth;
-                const newWidth = Math.ceil(currentWidth / 5) * 5;
-                const currentDivWidth = divRef.current.offsetWidth;
+            if (divRef.current && spanRef.current) {
+                const widthUnit = 2;
+                const currentDivScrollWidth = divRef.current.scrollWidth;
+                const divStyleWidth = parseFloat(
+                    window.getComputedStyle(divRef.current).width
+                );
+                const spanStyleWidth = parseFloat(
+                    window.getComputedStyle(spanRef.current).width
+                );
 
+                const newWidth =
+                    Math.ceil(currentDivScrollWidth / widthUnit) * widthUnit;
                 if (
-                    currentWidth < currentDivWidth - 7 ||
-                    currentWidth > currentDivWidth
+                    currentDivScrollWidth > divStyleWidth ||
+                    divStyleWidth > spanStyleWidth + widthUnit
                 ) {
                     divRef.current.style.width = `${newWidth}px`;
                 }
@@ -53,29 +60,23 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             adjustWidth();
         });
 
-        if (spanRef.current) {
-            observer.observe(spanRef.current);
+        if (divRef.current) {
+            observer.observe(divRef.current);
         }
 
         return () => {
-            if (spanRef.current) {
-                observer.unobserve(spanRef.current);
+            if (divRef.current) {
+                observer.unobserve(divRef.current);
             }
         };
-    }, [
-        currentTime,
-        matchBreak,
-        matchCurrentPeriod,
-        matchIsRegularTimeEnded,
-        matchIsFinished,
-    ]);
+    }, [currentTime]);
 
     // Форматированное значение времени
     const formattedTime = () => {
         if (matchIsFinished) return "match ended";
 
         if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
-            return "regular time ended";
+            return "90:00";
 
         // Случай 1: Перерыв
         if (matchBreak === 1) return "half-time";
@@ -111,13 +112,13 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     };
 
     return (
-        <div ref={divRef} className="flex min-w-8">
-            <span
-                ref={spanRef}
-                className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)]"
+        <div className="flex">
+            <div
+                ref={divRef}
+                className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
             >
-                {formattedTime()}
-            </span>
+                <span ref={spanRef}>{formattedTime()}</span>
+            </div>
         </div>
     );
 };
