@@ -18,33 +18,28 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     const spanRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        // Initialize currentTime with matchTimeStamp
         setCurrentTime(matchTimeStamp);
 
-        // Start timer if matchTimeStamp is greater than 0
+        // Если matchTimeStamp больше 0, запускаем таймер
         if (matchTimeStamp > 0) {
             const intervalId = setInterval(() => {
                 setCurrentTime((prevTime) => prevTime + 1);
             }, 1000);
 
-            // Clear interval on unmount or change of matchTimeStamp
+            // Очищаем интервал при изменении matchTimeStamp или размонтировании
             return () => clearInterval(intervalId);
         }
     }, [matchTimeStamp]);
 
     useEffect(() => {
-        // Adjust width of div based on the content width of span
         const adjustWidth = () => {
             if (spanRef.current && divRef.current) {
-                const widthUnit = 3;
                 const currentWidth = spanRef.current.offsetWidth;
-                const newWidth =
-                    Math.ceil(currentWidth / widthUnit) * widthUnit;
+                const newWidth = Math.ceil(currentWidth / 5) * 5;
                 const currentDivWidth = divRef.current.offsetWidth;
 
-                // Adjust width if it differs from the new calculated width
                 if (
-                    currentWidth < currentDivWidth - widthUnit * 2 ||
+                    currentWidth < currentDivWidth - 7 ||
                     currentWidth > currentDivWidth
                 ) {
                     divRef.current.style.width = `${newWidth}px`;
@@ -54,17 +49,14 @@ const AllLiveMatchDataMatchTimer: React.FC<{
 
         adjustWidth();
 
-        // Observer to track span width changes
         const observer = new ResizeObserver(() => {
             adjustWidth();
         });
 
-        // Start observing the span element
         if (spanRef.current) {
             observer.observe(spanRef.current);
         }
 
-        // Cleanup observer on component unmount
         return () => {
             if (spanRef.current) {
                 observer.unobserve(spanRef.current);
@@ -78,17 +70,17 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         matchIsFinished,
     ]);
 
-    // Formats the match time based on the match state
+    // Форматированное значение времени
     const formattedTime = () => {
         if (matchIsFinished) return "match ended";
 
         if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
             return "regular time ended";
 
-        // Case 1: Half-time
+        // Случай 1: Перерыв
         if (matchBreak === 1) return "half-time";
 
-        // Case 2: First period after 45:00
+        // Случай 2: Первый период после 45:00
         if (matchCurrentPeriod === 1 && matchTimeStamp > 2700) {
             const overtime = currentTime - 2700;
             const overtimeMinutes = Math.floor(overtime / 60)
@@ -98,7 +90,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             return `45:00 +${overtimeMinutes}:${overtimeSeconds}`;
         }
 
-        // Case 3: Second period after 90:00
+        // Случай 3: Второй период после 90:00
         if (matchCurrentPeriod === 2 && matchTimeStamp > 5400) {
             const overtime = currentTime - 5400;
             const overtimeMinutes = Math.floor(overtime / 60)
@@ -108,7 +100,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             return `90:00 +${overtimeMinutes}:${overtimeSeconds}`;
         }
 
-        // Default case: Regular match time
+        // Обычный случай времени матча
         return matchTimeStamp > 0
             ? `${Math.floor(currentTime / 60)
                   .toString()
@@ -122,7 +114,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         <div ref={divRef} className="flex min-w-8">
             <span
                 ref={spanRef}
-                className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
+                className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)]"
             >
                 {formattedTime()}
             </span>
