@@ -95,7 +95,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             // }
 
             if (spanRef.current && divRef.current) {
-                const widthUnit = 12;
+                const widthUnit = 22;
                 const divStyleWidth = parseFloat(
                     window.getComputedStyle(divRef.current).width
                 );
@@ -103,10 +103,11 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                     window.getComputedStyle(spanRef.current).width
                 );
                 const newWidth =
-                    (Math.ceil(spanStyleWidth / widthUnit) + 1) * widthUnit;
+                    Math.ceil(spanStyleWidth / widthUnit) * widthUnit +
+                    widthUnit;
                 if (
                     divStyleWidth > newWidth ||
-                    divStyleWidth <= spanStyleWidth + widthUnit / 2 - 1
+                    divStyleWidth <= spanStyleWidth + widthUnit / 2
                 ) {
                     console.log("newWidth ", newWidth);
                     divRef.current.style.width = `${newWidth}px`;
