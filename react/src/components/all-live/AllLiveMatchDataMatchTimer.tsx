@@ -95,7 +95,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
             // }
 
             if (spanRef.current && divRef.current) {
-                const widthUnit = 10;
+                const widthUnit = 12;
                 const divStyleWidth = parseFloat(
                     window.getComputedStyle(divRef.current).width
                 );
