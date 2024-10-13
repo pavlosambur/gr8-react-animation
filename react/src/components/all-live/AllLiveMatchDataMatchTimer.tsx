@@ -107,7 +107,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                     widthUnit;
 
                 if (
-                    divStyleWidth > newWidth ||
+                    divStyleWidth + 3 > newWidth ||
                     divStyleWidth <= spanStyleWidth + 3
                 ) {
                     console.log("newWidth ", newWidth);
