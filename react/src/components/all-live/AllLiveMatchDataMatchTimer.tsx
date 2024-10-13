@@ -44,7 +44,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
 
                 // Adjust width if it differs from the new calculated width
                 if (
-                    currentWidth < currentDivWidth - widthUnit + 1 ||
+                    currentWidth < currentDivWidth - widthUnit * 2 ||
                     currentWidth > currentDivWidth
                 ) {
                     divRef.current.style.width = `${newWidth}px`;
