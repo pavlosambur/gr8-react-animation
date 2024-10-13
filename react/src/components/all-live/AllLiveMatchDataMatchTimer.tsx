@@ -34,7 +34,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     useEffect(() => {
         const adjustWidth = () => {
             if (divRef.current && spanRef.current) {
-                const widthUnit = 2;
+                const widthUnit = 5;
                 const currentDivScrollWidth = divRef.current.scrollWidth;
                 const divStyleWidth = parseFloat(
                     window.getComputedStyle(divRef.current).width
@@ -69,7 +69,15 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 observer.unobserve(divRef.current);
             }
         };
-    }, [currentTime]);
+    }, [
+        currentTime,
+        matchTimeStamp,
+        matchBreak,
+        matchCurrentPeriod,
+        matchIsRegularTimeEnded,
+        matchIsFinished,
+        spanRef,
+    ]);
 
     // Форматированное значение времени
     const formattedTime = () => {
