@@ -104,7 +104,8 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 );
                 const newWidth =
                     (Math.ceil(spanStyleWidth / widthUnit) + 1) * widthUnit +
-                    widthUnit;
+                    widthUnit +
+                    1;
 
                 if (
                     divStyleWidth > newWidth ||
