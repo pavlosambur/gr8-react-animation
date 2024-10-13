@@ -1,6 +1,16 @@
 import axios from "axios";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
+
+// Валидация JSON
+function isValidJSON(data: any): boolean {
+    try {
+        JSON.stringify(data);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
 export async function getMegapariFootballLiveData(): Promise<void> {
     try {
@@ -9,12 +19,20 @@ export async function getMegapariFootballLiveData(): Promise<void> {
         );
         const data = response.data;
 
+        // Валидация структуры JSON
+        if (!isValidJSON(data)) {
+            console.error("Получен некорректный JSON");
+            return;
+        }
+
         // Сохраняем данные во временный файл
         const tempFilePath = path.join("/app/public/data_temp.json");
-        fs.writeFileSync(tempFilePath, JSON.stringify(data, null, 2));
+        const finalFilePath = path.join("/app/public/data.json");
+
+        await fs.writeFile(tempFilePath, JSON.stringify(data, null, 2));
 
         // Переименовываем временный файл в data.json после успешной записи
-        fs.renameSync(tempFilePath, path.join("/app/public/data.json"));
+        await fs.rename(tempFilePath, finalFilePath);
         console.log("Данные успешно сохранены в data.json");
     } catch (error) {
         console.error("Ошибка при получении данных:", error);

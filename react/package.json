@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "vite --host",
         "dockerdev": "docker-compose -f ../docker-compose.dev.yml up",
-        "dockerbuild": "docker-compose -f ../docker-compose.dev.yml up --build",
+        "dockerbuild": "docker-compose -f ../docker-compose.dev.yml build --no-cache",
         "dockerclean": "docker system prune -a -f --volumes",
         "build": "vite build",
         "preview": "vite preview",
