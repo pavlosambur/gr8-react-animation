@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const AllLiveMatchDataMatchTimer: React.FC<{
     matchTimeStamp: number;
@@ -15,6 +16,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
 }) => {
     const [currentTime, setCurrentTime] = useState(matchTimeStamp);
     const [formattedTime, setFormattedTime] = useState("match not started");
+    const { t } = useTranslation();
 
     useEffect(() => {
         setCurrentTime(matchTimeStamp);
@@ -33,11 +35,11 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     // Обновляем `formattedTime` при изменении зависимостей
     useEffect(() => {
         const formatTime = () => {
-            if (matchIsFinished) return "match ended";
+            if (matchIsFinished) return t("MATCH_ENDED");
             if (matchIsRegularTimeEnded < 0 && matchTimeStamp >= 5400)
-                return "90:00";
+                return t("REGULAR_TIME_ENDED");
 
-            if (matchBreak === 1) return "half-time";
+            if (matchBreak === 1) return t("HALF_TIME");
 
             if (matchCurrentPeriod === 1 && matchTimeStamp > 2700) {
                 const overtime = currentTime - 2700;
@@ -47,7 +49,9 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 const overtimeSeconds = (overtime % 60)
                     .toString()
                     .padStart(2, "0");
-                return `45:00\u00A0+${overtimeMinutes}:${overtimeSeconds}`;
+                return `${t(
+                    "OVERTIME_PREFIX_45"
+                )}\u00A0+${overtimeMinutes}:${overtimeSeconds}`;
             }
 
             if (matchCurrentPeriod === 2 && matchTimeStamp > 5400) {
@@ -58,7 +62,9 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 const overtimeSeconds = (overtime % 60)
                     .toString()
                     .padStart(2, "0");
-                return `90:00\u00A0+${overtimeMinutes}:${overtimeSeconds}`;
+                return `${t(
+                    "OVERTIME_PREFIX_90"
+                )}\u00A0+${overtimeMinutes}:${overtimeSeconds}`;
             }
 
             return matchTimeStamp > 0
@@ -67,7 +73,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                       .padStart(2, "0")}:${(currentTime % 60)
                       .toString()
                       .padStart(2, "0")}`
-                : "match not started";
+                : t("MATCH_NOT_STARTED");
         };
 
         setFormattedTime(formatTime());
