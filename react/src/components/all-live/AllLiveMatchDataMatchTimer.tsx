@@ -84,7 +84,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
     const splitFormattedTime = formattedTime
         .split(/(\d)/)
         .map((part, index) => {
-            if (part.match(/\d/)) {
+            if (part.match(/\d/) || part === " ") {
                 return (
                     <span
                         key={index}
