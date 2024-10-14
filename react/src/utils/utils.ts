@@ -8,12 +8,13 @@ export const getCountryCode = (countryName: string) => {
 };
 
 export const fetchData = async (
+    fileName: string,
     setData: React.Dispatch<React.SetStateAction<any[]>>,
     setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
     try {
-        const response = await fetch("/gr8-react-animation/data.json");
+        const response = await fetch(`/gr8-react-animation/${fileName}`);
 
         if (!response.ok) {
             throw new Error(`Ошибка загрузки данных: ${response.statusText}`);

@@ -26,8 +26,8 @@ export async function getMegapariFootballLiveData(): Promise<void> {
         }
 
         // Сохраняем данные во временный файл
-        const tempFilePath = path.join("/app/public/data_temp.json");
-        const finalFilePath = path.join("/app/public/data.json");
+        const tempFilePath = path.join("/app/public/soccer_data_temp.json");
+        const finalFilePath = path.join("/app/public/soccer_data.json");
 
         await fs.writeFile(tempFilePath, JSON.stringify(data, null, 2));
 
