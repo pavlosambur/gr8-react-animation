@@ -99,7 +99,16 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         });
 
     return (
-        <div className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap">
+        <div
+            className="inline-flex 
+        font-sf-pro-display 
+        font-semibold text-[10px] 
+        leading-[14px] 
+        tracking-[0.7px] 
+        uppercase 
+        text-[var(--text-live)] 
+        text-nowrap whitespace-nowrap  transition-all duration-300 ease-in-out"
+        >
             {splitFormattedTime}
         </div>
     );
