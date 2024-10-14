@@ -42,3 +42,23 @@ export const groupMatchesByLeague = (data: any[]) => {
         return acc;
     }, {});
 };
+
+export const getOddFromJSON = (
+    data: { B: boolean; C: number; G: number; T: number }[] | undefined,
+    targetG: number,
+    targetT: number
+): { C: number | undefined; B: boolean } => {
+    if (!Array.isArray(data)) {
+        // Если data не массив, возвращаем значения по умолчанию
+        return { C: undefined, B: false };
+    }
+
+    const foundItem = data.find(
+        (item) => item.G === targetG && item.T === targetT
+    );
+
+    return {
+        C: foundItem ? foundItem.C : undefined, // возвращает значение C или undefined
+        B: foundItem ? foundItem.B : false, // возвращает значение B или false
+    };
+};

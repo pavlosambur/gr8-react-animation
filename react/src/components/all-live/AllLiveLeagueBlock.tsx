@@ -85,6 +85,7 @@ const AllLiveLeagueBlock: React.FC<{
                     {matches.map((match, index) => (
                         <AllLiveMatchData
                             key={index}
+                            matchData={match}
                             outcomeCounter={match.EC}
                             matchTimeStamp={match.SC.TS}
                             matchBreak={match.SC.BR}

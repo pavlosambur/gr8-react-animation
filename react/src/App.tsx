@@ -18,6 +18,7 @@ const App: React.FC = () => {
 
                 {/* Роуты с поддержкой локализации */}
                 <Route path="/:lang" element={<Main />} />
+
                 <Route path="/:lang/alllive" element={<AllLive />} />
             </Routes>
         </HashRouter>

@@ -1,11 +1,15 @@
 import React from "react";
+import { getOddFromJSON } from "../../utils/utils";
 
 import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
 import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
-import OddField from "../utility-components/OddField";
+import OddsCard_MarketMarketMarket from "../odds-cards/OddsCard_MarketMarketMarket";
+import OddsCard_MarketMarket from "../odds-cards/OddsCard_MarketMarket";
+import OddsCard_MarketLabelMarket from "../odds-cards/OddsCard_MarketLabelMarket";
 
 const AllLiveMatchData: React.FC<{
+    matchData: any;
     outcomeCounter: string;
     matchTimeStamp?: number;
     matchBreak?: number;
@@ -19,6 +23,7 @@ const AllLiveMatchData: React.FC<{
     team2Name: string;
     team2Score: string;
 }> = ({
+    matchData,
     outcomeCounter,
     matchTimeStamp = 0,
     matchBreak = 0,
@@ -99,7 +104,7 @@ const AllLiveMatchData: React.FC<{
                             </div>
                         </div>
                         <div className="flex w-full gap-2 flex-wrap">
-                            <div className="flex-1 min-w-[300px] sm:w-1/3 gap-2 flex flex-col">
+                            <div className="flex-1 min-w-[300px] sm:w-1/4 gap-2 flex flex-col">
                                 <AllLiveMatchDataTeamInfo
                                     teamIMG={team1IMG}
                                     teamName={team1Name}
@@ -116,10 +121,49 @@ const AllLiveMatchData: React.FC<{
                             </div>
 
                             {/* odds */}
-                            <div className="flex flex-1 gap-2 order-2 sm:order-1">
-                                <OddField marketName="1" marketPrice={13} />
-                                <OddField marketName="х" marketPrice={5.1} />
-                                <OddField marketName="2" marketPrice={1.28} />
+                            <div className="flex flex-1 order-2 sm:order-1">
+                                <OddsCard_MarketMarketMarket
+                                    marketType={3}
+                                    market1Name="1"
+                                    market1Price={
+                                        getOddFromJSON(matchData.E, 1, 1).C
+                                    }
+                                    market1isBlocked={
+                                        getOddFromJSON(matchData.E, 1, 1).B
+                                    }
+                                    market2Name="x"
+                                    market2Price={
+                                        getOddFromJSON(matchData.E, 1, 2).C
+                                    }
+                                    market2isBlocked={
+                                        getOddFromJSON(matchData.E, 1, 2).B
+                                    }
+                                    market3Name="2"
+                                    market3Price={
+                                        getOddFromJSON(matchData.E, 1, 3).C
+                                    }
+                                    market3isBlocked={
+                                        getOddFromJSON(matchData.E, 1, 3).B
+                                    }
+                                />
+                            </div>
+                            <div className="flex flex-1 order-2 sm:order-1">
+                                <OddsCard_MarketLabelMarket
+                                    market1Name="over"
+                                    market1Price={5.4}
+                                    market2Name="under"
+                                    market2Price={3.05}
+                                    marketName="total"
+                                    marketValue="2.5"
+                                />
+                            </div>
+                            <div className="flex flex-1 order-2 sm:order-1">
+                                <OddsCard_MarketMarket
+                                    market1Name="HDP 1 (-1.5)"
+                                    market1Price={5.4}
+                                    market2Name="HDP 2 (1.5)"
+                                    market2Price={1.8}
+                                />
                             </div>
                         </div>
                     </div>
