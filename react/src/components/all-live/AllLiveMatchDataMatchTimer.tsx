@@ -15,8 +15,6 @@ const AllLiveMatchDataMatchTimer: React.FC<{
 }) => {
     const [currentTime, setCurrentTime] = useState(matchTimeStamp);
     const [formattedTime, setFormattedTime] = useState("match not started");
-    const divRef = useRef<HTMLDivElement>(null);
-    const spanRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
         setCurrentTime(matchTimeStamp);
@@ -82,47 +80,27 @@ const AllLiveMatchDataMatchTimer: React.FC<{
         matchIsFinished,
     ]);
 
-    // Обновляем ширину div после изменения formattedTime
-    useEffect(() => {
-        const adjustWidth = () => {
-            // if (spanRef.current && divRef.current) {
-            //     const widthUnit = 7;
-            //     const currentSpanScrollWidth = spanRef.current.scrollWidth;
-            //     // console.log(currentSpanScrollWidth);
-            //     const newWidth =
-            //         Math.ceil(currentSpanScrollWidth / widthUnit) * widthUnit;
-            //     divRef.current.style.width = `${newWidth + widthUnit}px`;
-            // }
-
-            if (spanRef.current && divRef.current) {
-                const widthUnit = 32;
-                const divStyleWidth = parseFloat(
-                    window.getComputedStyle(divRef.current).width
+    // Разделяем formattedTime на цифры и символы
+    const splitFormattedTime = formattedTime
+        .split(/(\d)/)
+        .map((part, index) => {
+            if (part.match(/\d/)) {
+                return (
+                    <span
+                        key={index}
+                        style={{ width: "7px", display: "inline-block" }}
+                    >
+                        {part}
+                    </span>
                 );
-                const spanStyleWidth = parseFloat(
-                    window.getComputedStyle(spanRef.current).width
-                );
-                const newWidth =
-                    Math.ceil(spanStyleWidth / widthUnit) * widthUnit;
-                if (
-                    divStyleWidth > newWidth ||
-                    divStyleWidth <= spanStyleWidth + widthUnit / 2
-                ) {
-                    console.log("newWidth ", newWidth);
-                    divRef.current.style.width = `${newWidth}px`;
-                }
+            } else {
+                return <span key={index}>{part}</span>;
             }
-        };
-
-        adjustWidth();
-    }, [formattedTime]);
+        });
 
     return (
-        <div
-            ref={divRef}
-            className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap"
-        >
-            <span ref={spanRef}>{formattedTime}</span>
+        <div className="inline-flex font-sf-pro-display font-semibold text-[10px] leading-[14px] tracking-[0.7px] uppercase text-[var(--text-live)] text-nowrap whitespace-nowrap">
+            {splitFormattedTime}
         </div>
     );
 };
