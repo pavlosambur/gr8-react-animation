@@ -47,7 +47,7 @@ const AllLiveMatchDataMatchTimer: React.FC<{
                 const overtimeSeconds = (overtime % 60)
                     .toString()
                     .padStart(2, "0");
-                return `45:00 +${overtimeMinutes}:${overtimeSeconds}`;
+                return `45:00\u00A0+${overtimeMinutes}:${overtimeSeconds}`;
             }
 
             if (matchCurrentPeriod === 2 && matchTimeStamp > 5400) {
