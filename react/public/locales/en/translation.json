@@ -3,6 +3,14 @@
     "MATCH_ENDED": "match ended",
     "HALF_TIME": "half-time",
     "REGULAR_TIME_ENDED": "full time",
-    "OVERTIME_PREFIX_45": "45:00 +",
-    "OVERTIME_PREFIX_90": "90:00 +"
+    "OVERTIME_PREFIX_45": "45:00",
+    "OVERTIME_PREFIX_90": "90:00",
+
+    "MARKET_MATCH_WINNER_TEAM1": "1",
+    "MARKET_MATCH_WINNER_DRAW": "x",
+    "MARKET_MATCH_WINNER_TEAM2": "2",
+    "MARKET_OVER": "over",
+    "MARKET_UNDER": "under",
+    "MARKET_HANDICAP_TEAM1": "hdp 1",
+    "MARKET_HANDICAP_TEAM2": "hdp 2"
 }

@@ -1,9 +1,13 @@
 import { iso31661 } from "iso-3166";
 
 export const getCountryCode = (countryName: string) => {
+    if (!countryName) return "cyb_f";
+
     const country = iso31661.find(
-        (entry) => entry.name.toLowerCase() === countryName.toLowerCase()
+        (entry) =>
+            entry.name && entry.name.toLowerCase() === countryName.toLowerCase()
     );
+
     return country ? country.alpha3.toLowerCase() : "cyb_f";
 };
 
@@ -20,7 +24,16 @@ export const fetchData = async (
             throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
         }
 
-        const result = await response.json();
+        // Добавляем обработку ошибок парсинга JSON
+        let result;
+        try {
+            result = await response.json();
+        } catch (jsonError) {
+            throw new SyntaxError(
+                `Ошибка парсинга JSON: ${(jsonError as Error).message}`
+            );
+        }
+
         setData(result.Value);
         setLoading(false);
     } catch (err) {

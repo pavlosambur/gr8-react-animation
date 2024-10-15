@@ -3,15 +3,17 @@ import {
     getMatchWinnerOddFromJSON,
     getMatchHandicapsAndTotalOddsFromJSON,
 } from "../../utils/utils";
+import { useTranslation } from "react-i18next";
 
 import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
 import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
+import AllLiveOutcomeCounter from "./AllLiveOutcomeCounter";
 import OddsCard_MarketMarketMarket from "../odds-cards/OddsCard_MarketMarketMarket";
 
 const AllLiveMatchData: React.FC<{
     matchData: any;
-    outcomeCounter: string;
+    outcomeCounter: number;
     matchTimeStamp?: number;
     matchBreak?: number;
     matchCurrentPeriod?: number;
@@ -38,6 +40,7 @@ const AllLiveMatchData: React.FC<{
     team2Name,
     team2Score,
 }) => {
+    const { t } = useTranslation();
     return (
         <>
             <div className="flex flex-row w-full border-t-[1px] first:border-t-0 border-t-[var(--divider-main)] px-4 gap-2">
@@ -85,27 +88,12 @@ const AllLiveMatchData: React.FC<{
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex items-center">
-                                <span className="font-sf-pro-display font-medium text-[10px] leading-[14px] tracking-[0.3px] normal-case text-[var(--text-body)]">
-                                    +{outcomeCounter}
-                                </span>
-                                <span className="inline-flex w-3 h-3">
-                                    <svg
-                                        className="w-full h-full"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <path
-                                            d="M9.8 17.2C9.4 16.8 9.4 16.2 9.8 15.8C10.7 14.9 13.6 12 13.6 12C13.6 12 10.7 9.2 9.8 8.2C9.4 7.8 9.4 7.2 9.8 6.8C10.2 6.4 10.8 6.4 11.2 6.8C12.3 7.9 14.6 10.2 15.7 11.3C16.1 11.7 16.1 12.3 15.7 12.7C14.9 13.5 12.4 16.1 11.2 17.2C10.8 17.6 10.2 17.6 9.8 17.2Z"
-                                            fill="var(--icon-main)"
-                                        ></path>
-                                    </svg>
-                                </span>
-                            </div>
+                            <AllLiveOutcomeCounter
+                                numberOfOutcomes={outcomeCounter}
+                            />
                         </div>
                         <div className="flex w-full gap-2 flex-wrap">
-                            <div className="flex-1 min-w-[300px] sm:w-1/4 gap-2 flex flex-col">
+                            <div className="flex flex-col gap-2 w-1/4">
                                 <AllLiveMatchDataTeamInfo
                                     teamIMG={team1IMG}
                                     teamName={team1Name}
@@ -122,10 +110,10 @@ const AllLiveMatchData: React.FC<{
                             </div>
 
                             {/* odds */}
-                            <div className="flex flex-1 order-2 sm:order-1">
+                            <div className="flex flex-1 order-2 sm:order-1 gap-2">
                                 <OddsCard_MarketMarketMarket
                                     marketType={3}
-                                    market1Name="1"
+                                    market1Name={t("MARKET_MATCH_WINNER_TEAM1")}
                                     market1Price={
                                         getMatchWinnerOddFromJSON(
                                             matchData.E,
@@ -133,7 +121,7 @@ const AllLiveMatchData: React.FC<{
                                             1
                                         ).C
                                     }
-                                    market2Name="x"
+                                    market2Name={t("MARKET_MATCH_WINNER_DRAW")}
                                     market2Price={
                                         getMatchWinnerOddFromJSON(
                                             matchData.E,
@@ -141,7 +129,7 @@ const AllLiveMatchData: React.FC<{
                                             2
                                         ).C
                                     }
-                                    market3Name="2"
+                                    market3Name={t("MARKET_MATCH_WINNER_TEAM2")}
                                     market3Price={
                                         getMatchWinnerOddFromJSON(
                                             matchData.E,
@@ -157,8 +145,7 @@ const AllLiveMatchData: React.FC<{
                                         ).B
                                     }
                                 />
-                            </div>
-                            <div className="flex flex-1 order-2 sm:order-1">
+
                                 <OddsCard_MarketMarketMarket
                                     marketName="total"
                                     marketValue={getMatchHandicapsAndTotalOddsFromJSON(
@@ -167,7 +154,7 @@ const AllLiveMatchData: React.FC<{
                                         9
                                     ).P?.toString()}
                                     marketShowLabel={false}
-                                    market1Name={`over${
+                                    market1Name={`${t("MARKET_OVER")}${
                                         getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
                                             17,
@@ -189,7 +176,7 @@ const AllLiveMatchData: React.FC<{
                                             9
                                         ).C
                                     }
-                                    market2Name={`under${
+                                    market2Name={`${t("MARKET_UNDER")}${
                                         getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
                                             17,
@@ -220,8 +207,7 @@ const AllLiveMatchData: React.FC<{
                                         ).B
                                     }
                                 />
-                            </div>
-                            <div className="flex flex-1 order-2 sm:order-1">
+
                                 <OddsCard_MarketMarketMarket
                                     marketName="hdp"
                                     marketValue={getMatchHandicapsAndTotalOddsFromJSON(
@@ -230,7 +216,9 @@ const AllLiveMatchData: React.FC<{
                                         9
                                     ).P?.toString()}
                                     marketShowLabel={false}
-                                    market1Name={`hdp 1 (${
+                                    market1Name={`${t(
+                                        "MARKET_HANDICAP_TEAM1"
+                                    )} (${
                                         (getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
                                             2,
@@ -256,7 +244,9 @@ const AllLiveMatchData: React.FC<{
                                             7
                                         ).C
                                     }
-                                    market2Name={`hdp 2 (${
+                                    market2Name={`${t(
+                                        "MARKET_HANDICAP_TEAM1"
+                                    )} (${
                                         (getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
                                             2,

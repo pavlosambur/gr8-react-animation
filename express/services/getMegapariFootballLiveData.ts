@@ -33,7 +33,7 @@ export async function getMegapariFootballLiveData(): Promise<void> {
 
         // Переименовываем временный файл в data.json после успешной записи
         await fs.rename(tempFilePath, finalFilePath);
-        console.log("Данные успешно сохранены в data.json");
+        // console.log("Данные успешно сохранены в data.json");
     } catch (error) {
         console.error("Ошибка при получении данных:", error);
     }
