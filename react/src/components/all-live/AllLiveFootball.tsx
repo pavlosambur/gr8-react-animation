@@ -9,34 +9,34 @@ const AllLiveFootball: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [priorities, setPriorities] = useState<{ [key: string]: number }>({});
+    const [refreshKey, setRefreshKey] = useState(0); // ключ для перезагрузки
     const fetchInterval = 5000;
 
     // Функция для получения данных с ретри
+    // Функция для получения данных с ретри
     useEffect(() => {
-        const fetchDataWithRetry = async (retries: number = 3) => {
-            while (retries > 0) {
-                try {
-                    await fetchData(
-                        "soccer_data.json",
-                        setData,
-                        setLoading,
-                        setError
-                    );
-                    return;
-                } catch (error) {
-                    console.error("Ошибка при получении данных:", error);
-                    retries -= 1;
-                    if (retries === 0) {
-                        setError("Failed to fetch after multiple attempts");
-                    }
-                }
+        const fetchDataWithRetry = async () => {
+            try {
+                await fetchData(
+                    "soccer_data.json",
+                    setData,
+                    setLoading,
+                    setError
+                );
+            } catch (error) {
+                console.error("Ошибка при получении данных:", error);
+
+                // Если произошла ошибка, ждём 3 секунды и пробуем снова
+                setTimeout(() => {
+                    setRefreshKey((prevKey) => prevKey + 1); // обновляем ключ для перезагрузки
+                }, 3000);
             }
         };
 
         fetchDataWithRetry();
         const intervalId = setInterval(fetchDataWithRetry, fetchInterval);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [refreshKey]); // добавляем зависимость от ключа
 
     // Загружаем приоритеты из cookie при изменении данных
     useEffect(() => {

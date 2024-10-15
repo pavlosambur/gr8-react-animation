@@ -8,8 +8,6 @@ import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
 import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
 import OddsCard_MarketMarketMarket from "../odds-cards/OddsCard_MarketMarketMarket";
-import OddsCard_MarketMarket from "../odds-cards/OddsCard_MarketMarket";
-// import OddsCard_MarketLabelMarket from "../odds-cards/OddsCard_MarketLabelMarket";
 
 const AllLiveMatchData: React.FC<{
     matchData: any;
@@ -169,11 +167,21 @@ const AllLiveMatchData: React.FC<{
                                         9
                                     ).P?.toString()}
                                     marketShowLabel={false}
-                                    market1Name={`over ${getMatchHandicapsAndTotalOddsFromJSON(
-                                        matchData.AE,
-                                        17,
-                                        9
-                                    ).P?.toString()}`}
+                                    market1Name={`over${
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            17,
+                                            9
+                                        ).P
+                                            ? ` ${
+                                                  getMatchHandicapsAndTotalOddsFromJSON(
+                                                      matchData.AE,
+                                                      17,
+                                                      9
+                                                  ).P
+                                              }`
+                                            : ""
+                                    }`}
                                     market1Price={
                                         getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
@@ -181,11 +189,21 @@ const AllLiveMatchData: React.FC<{
                                             9
                                         ).C
                                     }
-                                    market2Name={`under ${getMatchHandicapsAndTotalOddsFromJSON(
-                                        matchData.AE,
-                                        17,
-                                        10
-                                    ).P?.toString()}`}
+                                    market2Name={`under${
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            17,
+                                            10
+                                        ).P
+                                            ? ` ${
+                                                  getMatchHandicapsAndTotalOddsFromJSON(
+                                                      matchData.AE,
+                                                      17,
+                                                      10
+                                                  ).P
+                                              }`
+                                            : ""
+                                    }`}
                                     market2Price={
                                         getMatchHandicapsAndTotalOddsFromJSON(
                                             matchData.AE,
@@ -204,11 +222,74 @@ const AllLiveMatchData: React.FC<{
                                 />
                             </div>
                             <div className="flex flex-1 order-2 sm:order-1">
-                                <OddsCard_MarketMarket
-                                    market1Name="HDP 1 (-1.5)"
-                                    market1Price={5.4}
-                                    market2Name="HDP 2 (1.5)"
-                                    market2Price={1.8}
+                                <OddsCard_MarketMarketMarket
+                                    marketName="hdp"
+                                    marketValue={getMatchHandicapsAndTotalOddsFromJSON(
+                                        matchData.AE,
+                                        2,
+                                        9
+                                    ).P?.toString()}
+                                    marketShowLabel={false}
+                                    market1Name={`hdp 1 (${
+                                        (getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            2,
+                                            7
+                                        ).P ?? 0) > 0
+                                            ? `+${
+                                                  getMatchHandicapsAndTotalOddsFromJSON(
+                                                      matchData.AE,
+                                                      2,
+                                                      7
+                                                  ).P
+                                              }`
+                                            : getMatchHandicapsAndTotalOddsFromJSON(
+                                                  matchData.AE,
+                                                  2,
+                                                  7
+                                              ).P ?? 0
+                                    })`}
+                                    market1Price={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            2,
+                                            7
+                                        ).C
+                                    }
+                                    market2Name={`hdp 2 (${
+                                        (getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            2,
+                                            8
+                                        ).P ?? 0) > 0
+                                            ? `+${
+                                                  getMatchHandicapsAndTotalOddsFromJSON(
+                                                      matchData.AE,
+                                                      2,
+                                                      8
+                                                  ).P
+                                              }`
+                                            : getMatchHandicapsAndTotalOddsFromJSON(
+                                                  matchData.AE,
+                                                  2,
+                                                  8
+                                              ).P ?? 0
+                                    })`}
+                                    market2Price={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            2,
+                                            8
+                                        ).C
+                                    }
+                                    marketType={2}
+                                    marketIsBlocked={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            2,
+                                            8
+                                        ).B
+                                    }
                                 />
                             </div>
                         </div>
