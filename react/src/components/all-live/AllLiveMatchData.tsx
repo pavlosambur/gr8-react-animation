@@ -1,12 +1,15 @@
 import React from "react";
-import { getOddFromJSON } from "../../utils/utils";
+import {
+    getMatchWinnerOddFromJSON,
+    getMatchHandicapsAndTotalOddsFromJSON,
+} from "../../utils/utils";
 
 import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
 import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
 import OddsCard_MarketMarketMarket from "../odds-cards/OddsCard_MarketMarketMarket";
 import OddsCard_MarketMarket from "../odds-cards/OddsCard_MarketMarket";
-import OddsCard_MarketLabelMarket from "../odds-cards/OddsCard_MarketLabelMarket";
+// import OddsCard_MarketLabelMarket from "../odds-cards/OddsCard_MarketLabelMarket";
 
 const AllLiveMatchData: React.FC<{
     matchData: any;
@@ -126,35 +129,78 @@ const AllLiveMatchData: React.FC<{
                                     marketType={3}
                                     market1Name="1"
                                     market1Price={
-                                        getOddFromJSON(matchData.E, 1, 1).C
-                                    }
-                                    market1isBlocked={
-                                        getOddFromJSON(matchData.E, 1, 1).B
+                                        getMatchWinnerOddFromJSON(
+                                            matchData.E,
+                                            1,
+                                            1
+                                        ).C
                                     }
                                     market2Name="x"
                                     market2Price={
-                                        getOddFromJSON(matchData.E, 1, 2).C
-                                    }
-                                    market2isBlocked={
-                                        getOddFromJSON(matchData.E, 1, 2).B
+                                        getMatchWinnerOddFromJSON(
+                                            matchData.E,
+                                            1,
+                                            2
+                                        ).C
                                     }
                                     market3Name="2"
                                     market3Price={
-                                        getOddFromJSON(matchData.E, 1, 3).C
+                                        getMatchWinnerOddFromJSON(
+                                            matchData.E,
+                                            1,
+                                            3
+                                        ).C
                                     }
-                                    market3isBlocked={
-                                        getOddFromJSON(matchData.E, 1, 3).B
+                                    marketIsBlocked={
+                                        getMatchWinnerOddFromJSON(
+                                            matchData.E,
+                                            1,
+                                            3
+                                        ).B
                                     }
                                 />
                             </div>
                             <div className="flex flex-1 order-2 sm:order-1">
-                                <OddsCard_MarketLabelMarket
-                                    market1Name="over"
-                                    market1Price={5.4}
-                                    market2Name="under"
-                                    market2Price={3.05}
+                                <OddsCard_MarketMarketMarket
                                     marketName="total"
-                                    marketValue="2.5"
+                                    marketValue={getMatchHandicapsAndTotalOddsFromJSON(
+                                        matchData.AE,
+                                        17,
+                                        9
+                                    ).P?.toString()}
+                                    marketShowLabel={false}
+                                    market1Name={`over ${getMatchHandicapsAndTotalOddsFromJSON(
+                                        matchData.AE,
+                                        17,
+                                        9
+                                    ).P?.toString()}`}
+                                    market1Price={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            17,
+                                            9
+                                        ).C
+                                    }
+                                    market2Name={`under ${getMatchHandicapsAndTotalOddsFromJSON(
+                                        matchData.AE,
+                                        17,
+                                        10
+                                    ).P?.toString()}`}
+                                    market2Price={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            17,
+                                            10
+                                        ).C
+                                    }
+                                    marketType={2}
+                                    marketIsBlocked={
+                                        getMatchHandicapsAndTotalOddsFromJSON(
+                                            matchData.AE,
+                                            17,
+                                            10
+                                        ).B
+                                    }
                                 />
                             </div>
                             <div className="flex flex-1 order-2 sm:order-1">

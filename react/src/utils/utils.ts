@@ -43,7 +43,7 @@ export const groupMatchesByLeague = (data: any[]) => {
     }, {});
 };
 
-export const getOddFromJSON = (
+export const getMatchWinnerOddFromJSON = (
     data: { B: boolean; C: number; G: number; T: number }[] | undefined,
     targetG: number,
     targetT: number
@@ -60,5 +60,47 @@ export const getOddFromJSON = (
     return {
         C: foundItem ? foundItem.C : undefined, // возвращает значение C или undefined
         B: foundItem ? foundItem.B : false, // возвращает значение B или false
+    };
+};
+
+export const getMatchHandicapsAndTotalOddsFromJSON = (
+    data:
+        | {
+              G: number;
+              ME: {
+                  C: number;
+                  CE?: number;
+                  G: number;
+                  P?: number;
+                  T: number;
+                  B?: boolean;
+              }[];
+          }[]
+        | undefined,
+    targetG: number,
+    targetT: number
+): { C: number | undefined; B: boolean; P: number | undefined } => {
+    // Проверка, является ли data массивом
+    if (!Array.isArray(data)) {
+        return { C: undefined, B: false, P: undefined };
+    }
+
+    // Находим группу с целевым значением G
+    const targetGroup = data.find((item) => item.G === targetG);
+
+    if (!targetGroup) {
+        // Если группа с targetG не найдена, возвращаем значения по умолчанию
+        return { C: undefined, B: false, P: undefined };
+    }
+
+    // Ищем в массиве ME элемент с targetT и CE = 1
+    const foundItem = targetGroup.ME.find(
+        (item) => item.T === targetT && item.CE === 1
+    );
+
+    return {
+        C: foundItem ? foundItem.C : undefined,
+        B: foundItem ? foundItem.B ?? false : false,
+        P: foundItem ? foundItem.P : undefined,
     };
 };

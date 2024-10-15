@@ -4,31 +4,27 @@ import OddLabel from "../utility-components/OddLabel";
 const OddsCard_MarketMarketMarket: React.FC<{
     market1Name: string;
     market1Price?: number | null;
-    market1isBlocked: boolean;
     market2Name: string;
     market2Price?: number;
-    market2isBlocked: boolean;
-    market3Name: string;
+    market3Name?: string;
     market3Price?: number;
-    market3isBlocked: boolean;
     marketName?: string;
-    marketValue?: string;
+    marketValue?: string | undefined;
     marketShowLabel?: boolean;
     marketType: number;
+    marketIsBlocked: boolean;
 }> = ({
     market1Name,
     market1Price,
-    market1isBlocked,
     market2Name,
     market2Price,
-    market2isBlocked,
     market3Name,
     market3Price,
-    market3isBlocked,
     marketName,
     marketValue,
     marketShowLabel,
     marketType,
+    marketIsBlocked,
 }) => {
     const formatPrice = (price?: number | null): string | number => {
         if (typeof price === "number") {
@@ -47,22 +43,22 @@ const OddsCard_MarketMarketMarket: React.FC<{
 
     return (
         <div className="flex flex-nowrap flex-row w-full gap-2">
-            {marketType === 3 && (
+            {marketType === 3 && market1Name && market2Name && market3Name && (
                 <>
                     <OddField
                         marketName={market1Name}
                         marketPrice={display1Price}
-                        marketIsBlocked={market1isBlocked}
+                        marketIsBlocked={marketIsBlocked}
                     />
                     <OddField
                         marketName={market2Name}
                         marketPrice={display2Price}
-                        marketIsBlocked={market2isBlocked}
+                        marketIsBlocked={marketIsBlocked}
                     />
                     <OddField
                         marketName={market3Name}
                         marketPrice={display3Price}
-                        marketIsBlocked={market3isBlocked}
+                        marketIsBlocked={marketIsBlocked}
                     />
                 </>
             )}
@@ -71,12 +67,12 @@ const OddsCard_MarketMarketMarket: React.FC<{
                     <OddField
                         marketName={market1Name}
                         marketPrice={display1Price}
-                        marketIsBlocked={market1isBlocked}
+                        marketIsBlocked={marketIsBlocked}
                     />
                     <OddField
                         marketName={market2Name}
                         marketPrice={display2Price}
-                        marketIsBlocked={market2isBlocked}
+                        marketIsBlocked={marketIsBlocked}
                     />
                 </>
             )}
@@ -88,17 +84,17 @@ const OddsCard_MarketMarketMarket: React.FC<{
                         <OddField
                             marketName={market1Name}
                             marketPrice={display1Price}
-                            marketIsBlocked={market1isBlocked}
+                            marketIsBlocked={marketIsBlocked}
                         />
                         <OddLabel
                             oddsLabelName={marketName}
                             OddsLabelValue={marketValue}
-                            marketIsBlocked={market1isBlocked}
+                            marketIsBlocked={marketIsBlocked}
                         />
                         <OddField
                             marketName={market2Name}
                             marketPrice={display2Price}
-                            marketIsBlocked={market2isBlocked}
+                            marketIsBlocked={marketIsBlocked}
                         />
                     </>
                 )}
