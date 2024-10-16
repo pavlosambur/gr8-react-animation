@@ -11,7 +11,7 @@
         "dockerclean": "docker system prune -a -f --volumes",
         "build": "vite build",
         "preview": "vite preview",
-        "deploy": "gh-pages -d dist",
+        "deploy": "npm run build && scp -r dist/ root@91.239.233.52:/root/www/gr8.sambur.dev/nginx/html/",
         "predeploy": "npm run build",
         "lint": "eslint ."
     },
