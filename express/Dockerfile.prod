@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Компилируем TypeScript в JavaScript
-RUN npm run build
+RUN npx tsc
 
 # Удаляем development зависимости для production
 RUN npm prune --production
