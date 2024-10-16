@@ -17,7 +17,7 @@ i18n.use(HttpBackend)
             escapeValue: false,
         },
         backend: {
-            loadPath: "/gr8-react-animation/locales/{{lng}}/translation.json",
+            loadPath: `${process.env.REACT_APP_BASE_PATH}locales/{{lng}}/translation.json`,
         },
         detection: {
             order: ["path", "cookie", "localStorage", "navigator"],

@@ -18,7 +18,9 @@ export const fetchData = async (
     setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
     try {
-        const response = await fetch(`/gr8-react-animation/${fileName}`);
+        const response = await fetch(
+            process.env.REACT_APP_BASE_PATH + fileName
+        );
 
         if (!response.ok) {
             throw new Error(`Ошибка загрузки данных: ${response.statusText}`);

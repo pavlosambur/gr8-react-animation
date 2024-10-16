@@ -1,6 +1,7 @@
 import { Routes, Route, HashRouter, Navigate } from "react-router-dom";
 import Main from "./components/Main";
 import AllLive from "./components/AllLive";
+import Scoreboard from "./components/Scoreboard";
 import { useTranslation } from "react-i18next";
 import "./utils/i18n";
 
@@ -18,7 +19,7 @@ const App: React.FC = () => {
 
                 {/* Роуты с поддержкой локализации */}
                 <Route path="/:lang" element={<Main />} />
-
+                <Route path="/:lang/scoreboard" element={<Scoreboard />} />
                 <Route path="/:lang/alllive" element={<AllLive />} />
             </Routes>
         </HashRouter>
