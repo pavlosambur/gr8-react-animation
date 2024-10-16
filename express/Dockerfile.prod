@@ -1,4 +1,3 @@
-
 # Используем Node.js образ для Production
 FROM node:22-alpine
 
@@ -12,14 +11,11 @@ RUN npm install
 # Копируем остальные файлы проекта
 COPY . .
 
-# Компилируем TypeScript в JavaScript
-RUN npx tsc
-
 # Удаляем development зависимости для production
 RUN npm prune --production
 
 # Открываем порт для сервера
 EXPOSE 3000
 
-# Команда для запуска Express сервера
-CMD ["node", "dist/server.js"]
+# Команда для запуска Express сервера на TypeScript
+CMD ["npx", "ts-node", "server.ts"]
