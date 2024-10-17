@@ -25,7 +25,7 @@ services:
         volumes:
             # - ./nginx/certs:/etc/letsencrypt
             # - /etc/letsencrypt/live/gr8.sambur.dev:/etc/letsencrypt/live/gr8.sambur.dev:ro
-            - /home/www-data/gr8.sambur.dev/nginx/html:/usr/share/nginx/html
+            - /var/www/gr8.sambur.dev/nginx/html:/usr/share/nginx/html
             # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - /etc/letsencrypt/live/gr8.sambur.dev:/etc/letsencrypt/live/gr8.sambur.dev
             - /etc/letsencrypt/archive/gr8.sambur.dev:/etc/letsencrypt/archive/gr8.sambur.dev
