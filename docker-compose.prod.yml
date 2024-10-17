@@ -17,6 +17,7 @@ services:
             context: ./nginx
             dockerfile: Dockerfile.prod
         container_name: nginx_server
+        user: "www-data"
         restart: always
         ports:
             - "80:80"
