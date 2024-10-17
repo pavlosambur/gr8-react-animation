@@ -19,9 +19,9 @@ export const fetchData = async (
 ) => {
     try {
         const response = await fetch(
-            process.env.REACT_APP_BASE_PATH + fileName
+            process.env.REACT_APP_BASE_PATH + "/datafiles/" + fileName
         );
-        console.log(process.env.REACT_APP_BASE_PATH + fileName);
+        console.log(process.env.REACT_APP_BASE_PATH + "/datafiles/" + fileName);
         if (!response.ok) {
             throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
         }
