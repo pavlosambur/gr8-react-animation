@@ -31,6 +31,4 @@ services:
             - express-app
 
 volumes:
-    nginx_certs:
-    nginx_www:
     shared-data:
