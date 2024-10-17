@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-USER www-data
+# USER www-data
 
 # Копируем файл конфигурации Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
