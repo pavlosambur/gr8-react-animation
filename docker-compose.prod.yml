@@ -17,21 +17,15 @@ services:
             context: ./nginx
             dockerfile: Dockerfile.prod
         container_name: nginx_server
-        # user: "www-data"
         restart: always
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            # - ./nginx/certs:/etc/letsencrypt
-            # - /etc/letsencrypt/live/gr8.sambur.dev:/etc/letsencrypt/live/gr8.sambur.dev:ro
             - /var/www/gr8.sambur.dev/nginx/html:/usr/share/nginx/html
-            # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - /etc/letsencrypt/live/gr8.sambur.dev:/etc/letsencrypt/live/gr8.sambur.dev
             - /etc/letsencrypt/archive/gr8.sambur.dev:/etc/letsencrypt/archive/gr8.sambur.dev
             - /etc/letsencrypt/renewal/gr8.sambur.dev.conf:/etc/letsencrypt/renewal/gr8.sambur.dev.conf
-            # - /var/cache/nginx:/var/cache/nginx
-            # - shared-data:/app/public
         # depends_on:
         #     - express-app
 
