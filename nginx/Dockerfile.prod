@@ -1,0 +1,16 @@
+FROM nginx:latest
+
+# Копируем файл конфигурации Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Копируем статические файлы сайта в корневую директорию Nginx
+COPY html /usr/share/nginx/html
+
+# Копируем сертификаты (если используются)
+COPY certs /etc/nginx/certs
+
+# Открываем порт 80 для доступа к серверу
+EXPOSE 80
+
+# Запускаем Nginx
+CMD ["nginx", "-g", "daemon off;"]

@@ -13,7 +13,9 @@ services:
     #         - shared-data:/app/public
 
     nginx:
-        image: nginx:alpine
+        build:
+            context: ./nginx
+            dockerfile: Dockerfile.prod
         container_name: nginx_server
         restart: always
         ports:
@@ -24,8 +26,8 @@ services:
             - ./nginx/html:/usr/share/nginx/html
             - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
             - shared-data:/app/public
-        depends_on:
-            - express-app
+        # depends_on:
+        #     - express-app
 
     # certbot:
     #     image: certbot/certbot
