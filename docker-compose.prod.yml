@@ -26,6 +26,7 @@ services:
             - /etc/letsencrypt/live/gr8.sambur.dev:/etc/letsencrypt/live/gr8.sambur.dev
             - /etc/letsencrypt/archive/gr8.sambur.dev:/etc/letsencrypt/archive/gr8.sambur.dev
             - /etc/letsencrypt/renewal/gr8.sambur.dev.conf:/etc/letsencrypt/renewal/gr8.sambur.dev.conf
+            - shared-data:/app/public
         # depends_on:
         #     - express-app
 
