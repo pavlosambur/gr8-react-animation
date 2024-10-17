@@ -11,7 +11,7 @@
         "dockerclean": "docker system prune -a -f --volumes",
         "build": "vite build",
         "preview": "vite preview",
-        "deploy": "npm run build && scp -r dist/ root@91.239.233.52:/root/www/gr8.sambur.dev/nginx/html/",
+        "deploy": "npm run build && ssh www-data@91.239.233.52 \"docker stop nginx_server && rm -rf /var/www/gr8.sambur.dev/nginx/html/*\" && scp -r dist/* www-data@91.239.233.52:/var/www/gr8.sambur.dev/nginx/html/ && ssh www-data@91.239.233.52 \"docker start nginx_server\"",
         "predeploy": "npm run build",
         "lint": "eslint ."
     },
