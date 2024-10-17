@@ -19,7 +19,7 @@ export const fetchData = async (
 ) => {
     try {
         const response = await fetch(
-            `${process.env.REACT_APP_BASE_PATH}public/${fileName}`
+            process.env.REACT_APP_BASE_PATH + fileName
         );
         console.log(process.env.REACT_APP_BASE_PATH + fileName);
         if (!response.ok) {
