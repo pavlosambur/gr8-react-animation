@@ -1,16 +1,16 @@
 services:
-    express-app:
-        build:
-            context: ./express
-            dockerfile: Dockerfile.prod
-        container_name: express_app
-        restart: always
-        environment:
-            NODE_ENV: production
-        ports:
-            - "3000:3000"
-        volumes:
-            - shared-data:/app/public
+    # express-app:
+    #     build:
+    #         context: ./express
+    #         dockerfile: Dockerfile.prod
+    #     container_name: express_app
+    #     restart: always
+    #     environment:
+    #         NODE_ENV: production
+    #     ports:
+    #         - "3000:3000"
+    #     volumes:
+    #         - shared-data:/app/public
 
     nginx:
         image: nginx:alpine
