@@ -1,3 +1,4 @@
+// AllLiveMatchData.tsx
 import React from "react";
 import {
     getMatchWinnerOddFromJSON,
@@ -9,7 +10,7 @@ import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
 import AllLiveMatchDataTeamInfo from "./AllLiveMatchDataTeamInfo";
 import AllLiveOutcomeCounter from "./AllLiveOutcomeCounter";
-import OddsCard_MarketMarketMarket from "../odds-cards/OddsCard_MarketMarketMarket";
+import OddsCardAllLive from "../odds-cards/OddsCardAllLive.tsx";
 
 const AllLiveMatchData: React.FC<{
     matchData: any;
@@ -111,7 +112,7 @@ const AllLiveMatchData: React.FC<{
 
                             {/* odds */}
                             <div className="flex flex-1 order-2 sm:order-1 gap-2">
-                                <OddsCard_MarketMarketMarket
+                                <OddsCardAllLive
                                     marketType={3}
                                     market1Name={t("MARKET_MATCH_WINNER_TEAM1")}
                                     market1Price={
@@ -146,7 +147,7 @@ const AllLiveMatchData: React.FC<{
                                     }
                                 />
 
-                                <OddsCard_MarketMarketMarket
+                                <OddsCardAllLive
                                     marketName="total"
                                     marketValue={getMatchHandicapsAndTotalOddsFromJSON(
                                         matchData.AE,
@@ -208,7 +209,7 @@ const AllLiveMatchData: React.FC<{
                                     }
                                 />
 
-                                <OddsCard_MarketMarketMarket
+                                <OddsCardAllLive
                                     marketName="hdp"
                                     marketValue={getMatchHandicapsAndTotalOddsFromJSON(
                                         matchData.AE,

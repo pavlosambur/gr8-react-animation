@@ -1,7 +1,8 @@
+// OddsCardAllLive.tsx
 import OddField from "../utility-components/OddField";
 import OddLabel from "../utility-components/OddLabel";
 
-const OddsCard_MarketMarketMarket: React.FC<{
+const OddsCardAllLive: React.FC<{
     market1Name: string;
     market1Price?: number | null;
     market2Name: string;
@@ -102,4 +103,4 @@ const OddsCard_MarketMarketMarket: React.FC<{
     );
 };
 
-export default OddsCard_MarketMarketMarket;
+export default OddsCardAllLive;
