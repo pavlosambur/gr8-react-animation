@@ -18,9 +18,8 @@ export const fetchData = async (
     setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
     try {
-        const response = await fetch(
-            process.env.REACT_APP_DATAFILES_FOLDER_SUFFIX + fileName
-        );
+        const folderSuffix = import.meta.env.VITE_DATAFILES_FOLDER_SUFFIX || "";
+        const response = await fetch(folderSuffix + fileName);
         if (!response.ok) {
             throw new Error(`Ошибка загрузки данных: ${response.statusText}`);
         }

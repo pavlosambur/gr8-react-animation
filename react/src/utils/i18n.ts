@@ -17,7 +17,9 @@ i18n.use(HttpBackend)
             escapeValue: false,
         },
         backend: {
-            loadPath: `${process.env.REACT_APP_BASE_PATH}locales/{{lng}}/translation.json`,
+            loadPath: `${
+                import.meta.env.VITE_BASE_PATH
+            }locales/{{lng}}/translation.json`,
         },
         detection: {
             order: ["path", "cookie", "localStorage", "navigator"],

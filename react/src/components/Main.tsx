@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 const Main: React.FC = () => {
     const { i18n } = useTranslation();
     const lang = i18n.language; // получение текущего языка
+    const basepath = process.env.VITE_BASE_PATH || "";
 
     return (
         <HelmetProvider>
@@ -13,7 +14,7 @@ const Main: React.FC = () => {
                     <title>Main Page</title>
                     <meta
                         httpEquiv="refresh"
-                        content={`0; URL='${process.env.REACT_APP_BASE_PATH}#/${lang}/alllive'`} // Adjusted to include base URL
+                        content={`0; URL='${basepath}#/${lang}/alllive'`} // Adjusted to include base URL
                     />
                 </Helmet>
             </div>
