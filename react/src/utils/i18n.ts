@@ -6,26 +6,27 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const fallbackLng = "en";
 const supportedLanguages = ["en", "uk"]; // Укажи поддерживаемые языки
 
-i18n.use(HttpBackend)
-    .use(LanguageDetector)
-    .use(initReactI18next)
-    .init({
-        fallbackLng,
-        supportedLngs: supportedLanguages,
-        debug: false,
-        interpolation: {
-            escapeValue: false,
-        },
-        backend: {
-            loadPath: `${
-                import.meta.env.VITE_BASE_PATH
-            }locales/{{lng}}/translation.json`,
-        },
-        detection: {
-            order: ["path", "cookie", "localStorage", "navigator"],
-            lookupFromPathIndex: 0, // Берёт язык из первого сегмента пути
-            caches: ["cookie"],
-        },
-    });
+i18n
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng,
+    supportedLngs: supportedLanguages,
+    debug: false,
+    interpolation: {
+      escapeValue: false,
+    },
+    backend: {
+      loadPath: `${
+        import.meta.env.VITE_BASE_PATH
+      }locales/{{lng}}/translation.json`,
+    },
+    detection: {
+      order: ["path", "cookie", "localStorage", "navigator"],
+      lookupFromPathIndex: 0, // Берёт язык из первого сегмента пути
+      caches: ["cookie"],
+    },
+  });
 
 export default i18n;

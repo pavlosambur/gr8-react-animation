@@ -1,10 +1,9 @@
 // AllLiveMatchData.tsx
 import React from "react";
-import {
-    getMatchWinnerOddFromJSON,
-    getMatchHandicapsAndTotalOddsFromJSON,
-} from "../../utils/utils";
+import { getMatchWinnerOddFromJSON, getMatchHandicapsAndTotalOddsFromJSON } from "../../utils/utils";
 import { useTranslation } from "react-i18next";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 import AllLiveFavoriteIconMatch from "./AllLiveFavoriteIconMatch";
 import AllLiveMatchDataMatchTimer from "./AllLiveMatchDataMatchTimer";
@@ -42,6 +41,7 @@ const AllLiveMatchData: React.FC<{
     team2Score,
 }) => {
     const { t } = useTranslation();
+    const isMobileOrTablet = window.innerWidth < 1024;
     return (
         <>
             <div className="flex flex-row w-full border-t-[1px] first:border-t-0 border-t-[var(--divider-main)] px-4 gap-2">
@@ -54,19 +54,12 @@ const AllLiveMatchData: React.FC<{
                                         matchTimeStamp={matchTimeStamp}
                                         matchBreak={matchBreak}
                                         matchCurrentPeriod={matchCurrentPeriod}
-                                        matchIsRegularTimeEnded={
-                                            matchIsRegularTimeEnded
-                                        }
+                                        matchIsRegularTimeEnded={matchIsRegularTimeEnded}
                                         matchIsFinished={matchIsFinished}
                                     />
                                     <div className="inline-flex w-[14px] h-[14px]">
                                         <span>
-                                            <svg
-                                                className="w-full h-full"
-                                                viewBox="0 0 24 24"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
+                                            <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
                                                     fill="var(--text-outcome)"
@@ -81,207 +74,133 @@ const AllLiveMatchData: React.FC<{
                                         </span>
                                     </div>
                                     <div className="inline-flex w-[14px] h-[14px]">
-                                        <img
-                                            src="https://mdlr.tech/assets/images/brand5/xhdpi/img_translation.png"
-                                            alt=""
-                                            className="inline-flex w-full h-full"
-                                        />
+                                        <img src="https://mdlr.tech/assets/images/brand5/xhdpi/img_translation.png" alt="" className="inline-flex w-full h-full" />
                                     </div>
                                 </div>
                             </div>
-                            <AllLiveOutcomeCounter
-                                numberOfOutcomes={outcomeCounter}
-                            />
+                            <AllLiveOutcomeCounter numberOfOutcomes={outcomeCounter} />
                         </div>
-                        <div className="flex w-full gap-2 flex-wrap">
-                            <div className="flex flex-col gap-2 w-1/4">
-                                <AllLiveMatchDataTeamInfo
-                                    teamIMG={team1IMG}
-                                    teamName={team1Name}
-                                    teamScore={team1Score}
-                                />
-                                <AllLiveMatchDataTeamInfo
-                                    teamIMG={team2IMG}
-                                    teamName={team2Name}
-                                    teamScore={team2Score}
-                                />
+                        <div className="flex w-full gap-2 flex-wrap sm:flex-nowrap">
+                            <div className="flex flex-1 sm:flex-none flex-col gap-2 sm:w-1/3">
+                                <AllLiveMatchDataTeamInfo teamIMG={team1IMG} teamName={team1Name} teamScore={team1Score} />
+
+                                <AllLiveMatchDataTeamInfo teamIMG={team2IMG} teamName={team2Name} teamScore={team2Score} />
                             </div>
                             <div className="flex order-1 sm:order-2">
                                 <AllLiveFavoriteIconMatch size={4} />
                             </div>
 
                             {/* odds */}
-                            <div className="flex flex-1 order-2 sm:order-1 gap-2">
-                                <OddsCardAllLive
-                                    marketType={3}
-                                    market1Name={t("MARKET_MATCH_WINNER_TEAM1")}
-                                    market1Price={
-                                        getMatchWinnerOddFromJSON(
-                                            matchData.E,
-                                            1,
-                                            1
-                                        ).C
-                                    }
-                                    market2Name={t("MARKET_MATCH_WINNER_DRAW")}
-                                    market2Price={
-                                        getMatchWinnerOddFromJSON(
-                                            matchData.E,
-                                            1,
-                                            2
-                                        ).C
-                                    }
-                                    market3Name={t("MARKET_MATCH_WINNER_TEAM2")}
-                                    market3Price={
-                                        getMatchWinnerOddFromJSON(
-                                            matchData.E,
-                                            1,
-                                            3
-                                        ).C
-                                    }
-                                    marketIsBlocked={
-                                        getMatchWinnerOddFromJSON(
-                                            matchData.E,
-                                            1,
-                                            3
-                                        ).B
-                                    }
-                                />
-
-                                <OddsCardAllLive
-                                    marketName="total"
-                                    marketValue={getMatchHandicapsAndTotalOddsFromJSON(
-                                        matchData.AE,
-                                        17,
-                                        9
-                                    ).P?.toString()}
-                                    marketShowLabel={false}
-                                    market1Name={`${t("MARKET_OVER")}${
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            17,
-                                            9
-                                        ).P
-                                            ? ` ${
-                                                  getMatchHandicapsAndTotalOddsFromJSON(
-                                                      matchData.AE,
-                                                      17,
-                                                      9
-                                                  ).P
-                                              }`
-                                            : ""
-                                    }`}
-                                    market1Price={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            17,
-                                            9
-                                        ).C
-                                    }
-                                    market2Name={`${t("MARKET_UNDER")}${
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            17,
-                                            10
-                                        ).P
-                                            ? ` ${
-                                                  getMatchHandicapsAndTotalOddsFromJSON(
-                                                      matchData.AE,
-                                                      17,
-                                                      10
-                                                  ).P
-                                              }`
-                                            : ""
-                                    }`}
-                                    market2Price={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            17,
-                                            10
-                                        ).C
-                                    }
-                                    marketType={2}
-                                    marketIsBlocked={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            17,
-                                            10
-                                        ).B
-                                    }
-                                />
-
-                                <OddsCardAllLive
-                                    marketName="hdp"
-                                    marketValue={getMatchHandicapsAndTotalOddsFromJSON(
-                                        matchData.AE,
-                                        2,
-                                        9
-                                    ).P?.toString()}
-                                    marketShowLabel={false}
-                                    market1Name={`${t(
-                                        "MARKET_HANDICAP_TEAM1"
-                                    )} (${
-                                        (getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            2,
-                                            7
-                                        ).P ?? 0) > 0
-                                            ? `+${
-                                                  getMatchHandicapsAndTotalOddsFromJSON(
-                                                      matchData.AE,
-                                                      2,
-                                                      7
-                                                  ).P
-                                              }`
-                                            : getMatchHandicapsAndTotalOddsFromJSON(
-                                                  matchData.AE,
-                                                  2,
-                                                  7
-                                              ).P ?? 0
-                                    })`}
-                                    market1Price={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            2,
-                                            7
-                                        ).C
-                                    }
-                                    market2Name={`${t(
-                                        "MARKET_HANDICAP_TEAM1"
-                                    )} (${
-                                        (getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            2,
-                                            8
-                                        ).P ?? 0) > 0
-                                            ? `+${
-                                                  getMatchHandicapsAndTotalOddsFromJSON(
-                                                      matchData.AE,
-                                                      2,
-                                                      8
-                                                  ).P
-                                              }`
-                                            : getMatchHandicapsAndTotalOddsFromJSON(
-                                                  matchData.AE,
-                                                  2,
-                                                  8
-                                              ).P ?? 0
-                                    })`}
-                                    market2Price={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            2,
-                                            8
-                                        ).C
-                                    }
-                                    marketType={2}
-                                    marketIsBlocked={
-                                        getMatchHandicapsAndTotalOddsFromJSON(
-                                            matchData.AE,
-                                            2,
-                                            8
-                                        ).B
-                                    }
-                                />
+                            <div className="flex order-2 sm:order-1 w-full sm:min-w-0 sm:flex-1 gap-2">
+                                {isMobileOrTablet ? (
+                                    <Swiper spaceBetween={10} resistance={true} resistanceRatio={0.25} longSwipesRatio={0.25}>
+                                        <SwiperSlide>
+                                            <OddsCardAllLive
+                                                marketType={3}
+                                                market1Name={t("MARKET_MATCH_WINNER_TEAM1")}
+                                                market1Price={getMatchWinnerOddFromJSON(matchData.E, 1, 1).C}
+                                                market2Name={t("MARKET_MATCH_WINNER_DRAW")}
+                                                market2Price={getMatchWinnerOddFromJSON(matchData.E, 1, 2).C}
+                                                market3Name={t("MARKET_MATCH_WINNER_TEAM2")}
+                                                market3Price={getMatchWinnerOddFromJSON(matchData.E, 1, 3).C}
+                                                marketIsBlocked={getMatchWinnerOddFromJSON(matchData.E, 1, 3).B}
+                                            />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <OddsCardAllLive
+                                                marketName="total"
+                                                marketValue={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P?.toString()}
+                                                marketShowLabel={false}
+                                                market1Name={`${t("MARKET_OVER")}${
+                                                    getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P
+                                                        ? ` ${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P}`
+                                                        : ""
+                                                }`}
+                                                market1Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).C}
+                                                market2Name={`${t("MARKET_UNDER")}${
+                                                    getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).P
+                                                        ? ` ${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).P}`
+                                                        : ""
+                                                }`}
+                                                market2Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).C}
+                                                marketType={2}
+                                                marketIsBlocked={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).B}
+                                            />
+                                        </SwiperSlide>
+                                        <SwiperSlide>
+                                            <OddsCardAllLive
+                                                marketName="hdp"
+                                                marketValue={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 9).P?.toString()}
+                                                marketShowLabel={false}
+                                                market1Name={`${t("MARKET_HANDICAP_TEAM1")} (${
+                                                    (getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P ?? 0) > 0
+                                                        ? `+${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P}`
+                                                        : getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P ?? 0
+                                                })`}
+                                                market1Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).C}
+                                                market2Name={`${t("MARKET_HANDICAP_TEAM1")} (${
+                                                    (getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P ?? 0) > 0
+                                                        ? `+${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P}`
+                                                        : getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P ?? 0
+                                                })`}
+                                                market2Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).C}
+                                                marketType={2}
+                                                marketIsBlocked={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).B}
+                                            />
+                                        </SwiperSlide>
+                                    </Swiper>
+                                ) : (
+                                    <>
+                                        <OddsCardAllLive
+                                            marketType={3}
+                                            market1Name={t("MARKET_MATCH_WINNER_TEAM1")}
+                                            market1Price={getMatchWinnerOddFromJSON(matchData.E, 1, 1).C}
+                                            market2Name={t("MARKET_MATCH_WINNER_DRAW")}
+                                            market2Price={getMatchWinnerOddFromJSON(matchData.E, 1, 2).C}
+                                            market3Name={t("MARKET_MATCH_WINNER_TEAM2")}
+                                            market3Price={getMatchWinnerOddFromJSON(matchData.E, 1, 3).C}
+                                            marketIsBlocked={getMatchWinnerOddFromJSON(matchData.E, 1, 3).B}
+                                        />
+                                        <OddsCardAllLive
+                                            marketName="total"
+                                            marketValue={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P?.toString()}
+                                            marketShowLabel={false}
+                                            market1Name={`${t("MARKET_OVER")}${
+                                                getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P
+                                                    ? ` ${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).P}`
+                                                    : ""
+                                            }`}
+                                            market1Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 9).C}
+                                            market2Name={`${t("MARKET_UNDER")}${
+                                                getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).P
+                                                    ? ` ${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).P}`
+                                                    : ""
+                                            }`}
+                                            market2Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).C}
+                                            marketType={2}
+                                            marketIsBlocked={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 17, 10).B}
+                                        />
+                                        <OddsCardAllLive
+                                            marketName="hdp"
+                                            marketValue={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 9).P?.toString()}
+                                            marketShowLabel={false}
+                                            market1Name={`${t("MARKET_HANDICAP_TEAM1")} (${
+                                                (getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P ?? 0) > 0
+                                                    ? `+${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P}`
+                                                    : getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).P ?? 0
+                                            })`}
+                                            market1Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 7).C}
+                                            market2Name={`${t("MARKET_HANDICAP_TEAM1")} (${
+                                                (getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P ?? 0) > 0
+                                                    ? `+${getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P}`
+                                                    : getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).P ?? 0
+                                            })`}
+                                            market2Price={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).C}
+                                            marketType={2}
+                                            marketIsBlocked={getMatchHandicapsAndTotalOddsFromJSON(matchData.AE, 2, 8).B}
+                                        />
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>
