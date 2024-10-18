@@ -2,7 +2,7 @@ import React from "react";
 // import classNames from "classnames";
 
 const ComponentName: React.FC = () => {
-    return <></>;
+  return <></>;
 };
 
 export default ComponentName;

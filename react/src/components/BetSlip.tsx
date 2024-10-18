@@ -2,7 +2,7 @@
 import React from "react";
 
 const BetSlip: React.FC = () => {
-    return <></>;
+  return <></>;
 };
 
 export default BetSlip;
