@@ -47,7 +47,7 @@ const AllLiveMatchData: React.FC<{
   const isMobileOrTablet = window.innerWidth < 1024;
   return (
     <>
-      <div className="flex w-full flex-row gap-2 border-t-[1px] border-t-[var(--divider-main)] px-4 duration-100 first:border-t-0 hover:bg-[#cbcbcb20]">
+      <div className="flex w-full flex-row gap-2 border-t-[1px] border-t-[var(--divider-main)] px-4 duration-100 first:border-t-0 md:hover:bg-[#cbcbcb20]">
         <div className="flex w-full flex-row justify-between gap-2 py-2">
           <div className="flex w-full flex-col">
             <div className="mb-[6px] flex w-full">
