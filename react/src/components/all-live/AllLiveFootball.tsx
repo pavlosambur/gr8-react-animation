@@ -72,9 +72,9 @@ const AllLiveFootball: React.FC = () => {
         <img
           src="https://mdlr.tech/assets/images/brand5/mdpi/img_sport_f.png"
           alt=""
-          className="inline-block w-[22px] h-[22px]"
+          className="inline-block h-[22px] w-[22px]"
         />
-        <div className="ml-2 font-sf-pro-display text-[var(--text-body)] font-semibold text-[18px] leading-[22px] tracking-[0.6px] normal-case">
+        <div className="ml-2 font-sf-pro-display text-[18px] font-semibold normal-case leading-[22px] tracking-[0.6px] text-[var(--text-body)]">
           <span>Football</span>
         </div>
       </div>
