@@ -1,4 +1,5 @@
 // OddsCardAllLive.tsx
+import { useTranslation } from "react-i18next";
 
 import OddField from "../utility-components/OddField";
 import OddLabel from "../utility-components/OddLabel";
@@ -16,6 +17,7 @@ const OddsCardAllLive: React.FC<{
     marketType: number;
     marketIsBlocked: boolean;
 }> = ({ market1Name, market1Price, market2Name, market2Price, market3Name, market3Price, marketName, marketValue, marketShowLabel, marketType, marketIsBlocked }) => {
+    const { t } = useTranslation();
     const formatPrice = (price?: number | null): string | number => {
         if (typeof price === "number") {
             const [, decimalPart] = price.toString().split(".");
@@ -24,7 +26,7 @@ const OddsCardAllLive: React.FC<{
             }
             return price; // возвращаем как есть
         }
-        return "---"; // если не число
+        return t("ODDS_NO_PRICE_TEXT"); // если не число
     };
 
     const display1Price = formatPrice(market1Price);
