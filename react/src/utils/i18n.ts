@@ -1,10 +1,11 @@
+// i18n.ts
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpBackend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 
 const fallbackLng = "en";
-const supportedLanguages = ["en", "uk"]; // Укажи поддерживаемые языки
+const supportedLanguages = ["en"]; // Укажи поддерживаемые языки
 
 i18n
   .use(HttpBackend)
@@ -18,9 +19,7 @@ i18n
       escapeValue: false,
     },
     backend: {
-      loadPath: `${
-        import.meta.env.VITE_BASE_PATH
-      }locales/{{lng}}/translation.json`,
+      loadPath: `${import.meta.env.VITE_BASE_PATH}locales/{{lng}}/translation.json`,
     },
     detection: {
       order: ["path", "cookie", "localStorage", "navigator"],
