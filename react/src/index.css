@@ -9,6 +9,7 @@
     url("/fonts/SFProDisplay-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
+  font-display: fallback;
 }
 
 @font-face {
@@ -18,6 +19,7 @@
     url("/fonts/SFProDisplay-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
+  font-display: fallback;
 }
 
 @font-face {
@@ -27,6 +29,7 @@
     url("/fonts/SFProDisplay-Semibold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
+  font-display: fallback;
 }
 
 @font-face {
@@ -36,10 +39,10 @@
     url("/fonts/SFProDisplay-Bold.woff") format("woff");
   font-weight: 700;
   font-style: normal;
+  font-display: fallback;
 }
 
 body {
-  @apply bg-customGray text-white items-center w-full h-full;
 }
 
 :root {
@@ -256,17 +259,8 @@ body {
   --text-subtitle: #575249;
   --text-title: #292621;
   --text-warning: #cc6e2a;
-  --gradient-background-profile: linear-gradient(
-    63.43deg,
-    #844daf 22.64%,
-    #ec940f 100%
-  );
-  --gradient-bet-builder: linear-gradient(
-    63.43deg,
-    #fbca4d 0%,
-    #f66c6c 50%,
-    #fbca4d 100%
-  );
+  --gradient-background-profile: linear-gradient(63.43deg, #844daf 22.64%, #ec940f 100%);
+  --gradient-bet-builder: linear-gradient(63.43deg, #fbca4d 0%, #f66c6c 50%, #fbca4d 100%);
   --gradient-black-down: linear-gradient(
     0deg,
     #00000000 0%,
@@ -303,30 +297,10 @@ body {
     #000000fb 99.14%,
     #000000 100%
   );
-  --gradient-loading: linear-gradient(
-    89.76deg,
-    #bdb8ad 0%,
-    #bdb8ad1a 49.57%,
-    #bdb8ad 100%
-  );
-  --gradient-loading-always-light: linear-gradient(
-    89.76deg,
-    #bdb8ad 0%,
-    #bdb8ad1a 49.57%,
-    #bdb8ad 100%
-  );
-  --gradient-loading-deposit: linear-gradient(
-    89.76deg,
-    #99d8c3 0%,
-    #99d8c31a 51.56%,
-    #99d8c3 100%
-  );
-  --gradient-loading-outcome: linear-gradient(
-    89.76deg,
-    #dcd9d3 0%,
-    #edebe91a 51.56%,
-    #edebe9 100%
-  );
+  --gradient-loading: linear-gradient(89.76deg, #bdb8ad 0%, #bdb8ad1a 49.57%, #bdb8ad 100%);
+  --gradient-loading-always-light: linear-gradient(89.76deg, #bdb8ad 0%, #bdb8ad1a 49.57%, #bdb8ad 100%);
+  --gradient-loading-deposit: linear-gradient(89.76deg, #99d8c3 0%, #99d8c31a 51.56%, #99d8c3 100%);
+  --gradient-loading-outcome: linear-gradient(89.76deg, #dcd9d3 0%, #edebe91a 51.56%, #edebe9 100%);
   --gradient-progress-bar: linear-gradient(63.43deg, #ff6a66 0%, #af85c1 100%);
   --gradient-share-hologram: linear-gradient(
     0deg,

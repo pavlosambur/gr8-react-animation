@@ -5,7 +5,7 @@ import AllLiveFootball from "./all-live/AllLiveFootball";
 const AllLive: React.FC = () => {
   return (
     <HelmetProvider>
-      <div className="flex flex-col w-full max-w-5xl bg-[var(--background-secondary)] justify-start px-1 select-none">
+      <div className="flex w-full max-w-5xl select-none flex-col justify-start bg-[var(--background-secondary)] px-1">
         <Helmet>
           <title>All live</title>
         </Helmet>
